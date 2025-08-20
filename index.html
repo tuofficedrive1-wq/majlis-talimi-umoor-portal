@@ -80,7 +80,6 @@
         <button data-tab="talimi">Talimi Zimedaran</button>
         <button data-tab="jaiza">Jaiza Report</button>
         <button data-tab="mahana">Mahana Test Report</button>
-        <button data-tab="ibtidaiya">Ibtidaiya Result</button>
         <button data-tab="elamiya">Elamiya</button>
       </nav>
     </div>
@@ -93,7 +92,7 @@
         <div>
           <span class="badge">Welcome</span>
           <h2>Majlis Talimi Umoor — Education Board</h2>
-          <p>Is portal me aap Talimi Zimedaran, Jaiza Report, Mahana Test Report, Ibtidaiya Results aur Elamiya ki PDFs asaani se dekh sakte hain. Saara data Google Sheets/Drive se aayega.</p>
+          <p>Is portal me aap Talimi Zimedaran, Jaiza Report, Mahana Test Report aur Elamiya ki PDFs asaani se dekh sakte hain. Saara data Google Sheets/Drive se aayega.</p>
         </div>
       </div>
       <div class="grid" style="margin-top:16px">
@@ -104,7 +103,7 @@
           <div class="card"><h3>Google Sheets se Data</h3><p class="muted">Har section ki apni Sheet ID rakhein.</p></div>
         </div>
         <div class="col-4">
-          <div class="card"><h3>Google Drive PDFs</h3><p class="muted">Ibtidaiya & Elamiya me downloads.</p></div>
+          <div class="card"><h3>Google Drive PDFs</h3><p class="muted">Downloads ke liye.</p></div>
         </div>
       </div>
     </section>
@@ -134,102 +133,6 @@
       </div>
     </section>
 
-    <!-- Ibtidaiya Result (Region → State → Jamia) -->
-<section id="tab-ibtidaiya" class="hide">
-  <div class="card">
-    <h3>Ibtidaiya Result — Search</h3>
-    <div class="row" style="gap:12px;flex-wrap:wrap">
-      <select id="sel-region"><option value="">Region select karein</option></select>
-      <select id="sel-state"><option value="">State select karein</option></select>
-      <select id="sel-jamia"><option value="">Jamia select karein</option></select>
-    </div>
-    <div id="ibt-result" style="margin-top:14px" class="muted">Result yahan show hoga…</div>
-  </div>
-</section>
-
-<script>
-// --- CONFIG: Apni Google Sheet ka ID daalo ---
-const CONFIG = {
-  IBTIDAIYA_MAP: "1dZKwJ__vBMfv7fQqOOb8PHx8TQcBc6h9XPDkuucaBD0"
-};
-
-async function fetchSheet(sheetName) {
-  const url = `https://opensheet.elk.sh/${CONFIG.IBTIDAIYA_MAP}/${Map}`;
-  const response = await fetch(url);
-  const data = await response.json();
-  return data;
-}
-
-// Example call
-fetchSheet("Map").then(data => {
-  console.log("Google Sheet Data:", data);
-});
-
-// --- Load initial data ---
-async function loadIbtidaiya(){
-  const {rows} = await fetchSheet(CONFIG.IBTIDAIYA_MAP, "Mapping");
-  ibtData = rows.filter(r=>r.Region && r.State && r.Jamia && r.Code);
-
-  const regions = [...new Set(ibtData.map(r=>r.Region))].sort();
-  selRegion.innerHTML = '<option value="">Region select karein</option>' +
-    regions.map(v=>`<option>${v}</option>`).join('');
-}
-
-sel-Region.addEventListener('change', ()=>{
-  const region = selRegion.value;
-  const states = [...new Set(ibtData.filter(r=>r.Region===region).map(r=>r.State))].sort();
-  selState.innerHTML = '<option value="">State select karein</option>' +
-    states.map(v=>`<option>${v}</option>`).join('');
-});
-
-sel-State.addEventListener('change', ()=>{
-  const state = selState.value;
-  const jamias = [...new Set(ibtData.filter(r=>r.State===state).map(r=>r.Jamia))].sort();
-  let selJamia = document.getElementById("selJamia");
-selJamia.innerHTML = '<option value="">Jamia select karein</option>' + jamiaList.map(j => `<option value="${j}">${j}</option>`).join('');
-    jamias.map(v=>`<option>${v}</option>`).join('');
-});
-
-// --- Search button ---
-btnSearch.addEventListener('click', ()=>{
-  const region = selRegion.value,
-        state = selState.value,
-        jamia = selJamia.value,
-        code = selCode.value.trim();
-
-  if(!region || !state || !jamia || !code){
-    ibtResult.textContent = "⚠️ Saari fields bharni hain.";
-    return;
-  }
-
-  const row = ibtData.find(r=>
-    r.Region===region &&
-    r.State===state &&
-    r.Jamia===jamia &&
-    r.Code===code
-  );
-
-  if(!row){
-    ibtResult.textContent = "❌ Is code ka record nahi mila.";
-    return;
-  }
-
-  const title = row.FileTitle || `${jamia} Result`;
-  const dl = `https://drive.google.com/uc?id=${row.FileId}&export=download`;
-  const view = `https://drive.google.com/file/d/${row.FileId}/view`;
-
-  ibtResult.innerHTML = `
-    <div class="row" style="gap:8px;flex-wrap:wrap">
-      <input type="text" value="${title}" readonly>
-      <a href="${view}" target="_blank"><button class="btn secondary">Open in Drive</button></a>
-      <a href="${dl}"><button class="btn">Download PDF</button></a>
-    </div>`;
-});
-
-// --- Page load par initialize ---
-loadIbtidaiya();
-</script>
-
     <!-- Elamiya PDFs list -->
     <section id="tab-elamiya" class="hide">
       <div class="card">
@@ -249,21 +152,13 @@ loadIbtidaiya();
     // 🔧 CONFIG — EDIT THESE VALUES
     // =============================
     const CONFIG = {
-  TALIMI:   { SHEET_ID: "1YPwNNvMgLb8QjovsK29nwZ-scuwFb4ShvvKZfq1oWVY", SHEET_NAME: "Talimi" },
-  JAIZA:    { SHEET_ID: "1_7xTzAI1_BT1peRklxIUAahDtNc2eJMUyaNhUFeLKU0", SHEET_NAME: "Jaiza" },
+      TALIMI:   { SHEET_ID: "1YPwNNvMgLb8QjovsK29nwZ-scuwFb4ShvvKZfq1oWVY", SHEET_NAME: "Talimi" },
+      JAIZA:    { SHEET_ID: "1_7xTzAI1_BT1peRklxIUAahDtNc2eJMUyaNhUFeLKU0", SHEET_NAME: "Jaiza" },
+      MAHANA:   { SHEET_ID: "19Ys4Y08Bch0Debpix-F8sG8BXb02VbTYgUlZXL6S5no", SHEET_NAME: "Mahana" },
+      DRIVE_API_KEY: "YOUR_PUBLIC_API_KEY",
+      ELAMIYA_FOLDER_ID: "YOUR_FOLDER_ID"
+    };
 
-  // ✅ yaha correct ID aur Sheet name daalna hai
-  MAHANA:   { SHEET_ID: "19Ys4Y08Bch0Debpix-F8sG8BXb02VbTYgUlZXL6S5no", SHEET_NAME: "Mahana" },
-
-  IBTIDAIYA_MAP: { SHEET_ID: "1dZKwJ__vBMfv7fQqOOb8PHx8TQcBc6h9XPDkuucaBD0", SHEET_NAME: "Map" },
-  DRIVE_API_KEY: "YOUR_PUBLIC_API_KEY",
-  ELAMIYA_FOLDER_ID: "YOUR_FOLDER_ID"
-};
-
-
-    // =============================
-    // Helpers
-    // =============================
     const $ = (x)=>document.querySelector(x);
 
     function tabSwitch(id){
@@ -275,19 +170,13 @@ loadIbtidaiya();
 
     document.getElementById('yr').textContent = new Date().getFullYear();
 
-    // Nav clicks
     document.getElementById('nav').addEventListener('click', (e)=>{
       if(e.target.matches('button[data-tab]')){
         tabSwitch(e.target.dataset.tab);
       }
     });
 
-    // -----------------------------
-    // Google Sheets (GViz JSON)
-    // -----------------------------
-    // IMPORTANT: File → Share → Anyone with the link (Viewer)
-    // Then: File → Share → Publish to web → Entire Document → Web
-    // We'll use the gviz endpoint which doesn't need API keys
+    // Google Sheets fetch
     async function fetchSheet({SHEET_ID, SHEET_NAME}, query="select *"){
       const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&tq=${encodeURIComponent(query)}`;
       const res = await fetch(url);
@@ -308,15 +197,14 @@ loadIbtidaiya();
     }
 
     function escapeHtml(s){
-  return String(s).replace(/[&<>"]/g, m => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    "\"": "&quot;"
-  }[m]));
-}
+      return String(s).replace(/[&<>"]/g, m => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;"
+      }[m]));
+    }
 
-    // Load three sheet tables
     async function loadTables(){
       try{
         const t1 = await fetchSheet(CONFIG.TALIMI);
@@ -332,57 +220,6 @@ loadIbtidaiya();
       }catch(e){ console.warn('Mahana load error', e); }
     }
 
-    // -----------------------------
-    // Ibtidaiya (Region→State→Jamia mapping from Sheet)
-    // -----------------------------
-    let ibtData = [];
-    async function loadIbtidaiya(){
-      try{
-        const {rows} = await fetchSheet(CONFIG.IBTIDAIYA_MAP);
-        ibtData = rows.filter(r=>r.Region && r.State && r.Jamia);
-        const regions = [...new Set(ibtData.map(r=>r.Region))].sort();
-        $('#sel-region').innerHTML = '<option value="">Select Region</option>' + regions.map(v=>`<option>${escapeHtml(v)}</option>`).join('');
-        $('#sel-state').innerHTML = '<option value="">Select State</option>';
-        $('#sel-jamia').innerHTML = '<option value="">Select Jamia</option>';
-      }catch(e){
-        document.getElementById('ibt-result').textContent = 'Mapping sheet load na ho saka. Config check karein.';
-      }
-    }
-
-    $('#sel-region').addEventListener('change', e=>{
-      const region = e.target.value; if(!region){ $('#sel-state').innerHTML = '<option value="">Select State</option>'; $('#sel-jamia').innerHTML = '<option value="">Select Jamia</option>'; return; }
-      const states = [...new Set(ibtData.filter(r=>r.Region===region).map(r=>r.State))].sort();
-      $('#sel-state').innerHTML = '<option value="">Select State</option>' + states.map(v=>`<option>${escapeHtml(v)}</option>`).join('');
-      $('#ibt-result').textContent = 'State select karein…';
-    });
-
-    $('#sel-state').addEventListener('change', e=>{
-      const region = $('#sel-region').value, state = e.target.value; if(!state){ $('#sel-jamia').innerHTML = '<option value="">Select Jamia</option>'; return; }
-      const jamias = ibtData.filter(r=>r.Region===region && r.State===state).map(r=>r.Jamia);
-      const uniq = [...new Set(jamias)].sort();
-      $('#sel-jamia').innerHTML = '<option value="">Select Jamia</option>' + uniq.map(v=>`<option>${escapeHtml(v)}</option>`).join('');
-      $('#ibt-result').textContent = 'Jamia select karein…';
-    });
-
-    $('#sel-jamia').addEventListener('change', e=>{
-      const region=$('#sel-region').value, state=$('#sel-state').value, jamia=e.target.value;
-      if(!jamia){ $('#ibt-result').textContent='Jamia select karein…'; return; }
-      const row = ibtData.find(r=>r.Region===region && r.State===state && r.Jamia===jamia);
-      if(!row || !row.FileId){ $('#ibt-result').textContent = 'Is Jamia ki PDF mapping nahi mili.'; return; }
-      const title = row.FileTitle || `${jamia} — Ibtidaiya Result`;
-      const dl = `https://drive.google.com/uc?id=${encodeURIComponent(row.FileId)}&export=download`;
-      const view = `https://drive.google.com/file/d/${encodeURIComponent(row.FileId)}/view`;
-      $('#ibt-result').innerHTML = `
-        <div class="row">
-          <input type="text" value="${escapeHtml(title)}" readonly>
-          <a class="btn" href="${view}" target="_blank"><button class="btn secondary">Open in Drive</button></a>
-          <a class="btn" href="${dl}"><button class="btn">Download PDF</button></a>
-        </div>`;
-    });
-
-    // -----------------------------
-    // Elamiya (Drive folder list via API key)
-    // -----------------------------
     async function loadElamiya(){
       const key = CONFIG.DRIVE_API_KEY; const folder = CONFIG.ELAMIYA_FOLDER_ID;
       if(!key || !folder){ document.getElementById('elamiya-list').innerHTML = '<p class="muted">DRIVE_API_KEY ya FOLDER_ID set karein.</p>'; return; }
@@ -402,29 +239,10 @@ loadIbtidaiya();
       }
     }
 
-    // Init
     (async function init(){
       await loadTables();
-      await loadIbtidaiya();
       await loadElamiya();
     })();
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
