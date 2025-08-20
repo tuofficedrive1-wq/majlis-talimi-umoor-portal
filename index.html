@@ -135,51 +135,81 @@
     </section>
 
     <!-- Ibtidaiya Result (Region → State → Jamia) -->
-    <section id="tab-ibtidaiya" class="hide">
+<section id="tab-ibtidaiya" class="hide">
   <div class="card">
-  <h3>Ibtidaiya Result — Search</h3>
-  <div class="row" style="gap:12px;flex-wrap:wrap">
-    <select id="sel-region"><option value="">Region select karein</option></select>
-    <select id="sel-state"><option value="">State select karein</option></select>
-    <select id="sel-jamia"><option value="">Jamia select karein</option></select>
-    <input type="text" id="sel-code" placeholder="Code darj karein">
-    <button class="btn" id="btn-search">🔍 Search karein</button>
+    <h3>Ibtidaiya Result — Search</h3>
+    <div class="row" style="gap:12px;flex-wrap:wrap">
+      <select id="sel-region"><option value="">Region select karein</option></select>
+      <select id="sel-state"><option value="">State select karein</option></select>
+      <select id="sel-jamia"><option value="">Jamia select karein</option></select>
+      <input type="text" id="sel-code" placeholder="Code darj karein">
+      <button class="btn" id="btn-search">🔍 Search karein</button>
+    </div>
+    <div id="ibt-result" style="margin-top:14px" class="muted">Result yahan show hoga…</div>
   </div>
-  <div id="ibt-result" style="margin-top:14px" class="muted">Result yahan show hoga…</div>
-</div>
+</section>
 
 <script>
 let ibtData = [];
+
+// sabhi elements ko bind karo
+const selRegion = document.getElementById("sel-region");
+const selState = document.getElementById("sel-state");
+const selJamia = document.getElementById("sel-jamia");
+const selCode = document.getElementById("sel-code");
+const btnSearch = document.getElementById("btn-search");
+const ibtResult = document.getElementById("ibt-result");
 
 // Load mapping sheet
 async function loadIbtidaiya(){
   const {rows} = await fetchSheet(CONFIG.IBTIDAIYA_MAP);
   ibtData = rows.filter(r=>r.Region && r.State && r.Jamia && r.Code);
+
+  // Region fill
   const regions = [...new Set(ibtData.map(r=>r.Region))].sort();
-  selRegion.innerHTML = '<option value="">Region select karein</option>' + regions.map(v=>`<option>${v}</option>`).join('');
+  selRegion.innerHTML = '<option value="">Region select karein</option>' +
+    regions.map(v=>`<option>${v}</option>`).join('');
 }
 
+// Region change → States fill
 selRegion.addEventListener('change', ()=>{
   const region = selRegion.value;
   const states = [...new Set(ibtData.filter(r=>r.Region===region).map(r=>r.State))].sort();
-  selState.innerHTML = '<option value="">State select karein</option>' + states.map(v=>`<option>${v}</option>`).join('');
+  selState.innerHTML = '<option value="">State select karein</option>' +
+    states.map(v=>`<option>${v}</option>`).join('');
+  selJamia.innerHTML = '<option value="">Jamia select karein</option>'; // reset
 });
 
+// State change → Jamia fill
 selState.addEventListener('change', ()=>{
   const state = selState.value;
   const jamias = [...new Set(ibtData.filter(r=>r.State===state).map(r=>r.Jamia))].sort();
-  selJamia.innerHTML = '<option value="">Jamia select karein</option>' + jamias.map(v=>`<option>${v}</option>`).join('');
+  selJamia.innerHTML = '<option value="">Jamia select karein</option>' +
+    jamias.map(v=>`<option>${v}</option>`).join('');
 });
 
 // Search button
 btnSearch.addEventListener('click', ()=>{
-  const region = selRegion.value, state = selState.value, jamia = selJamia.value, code = selCode.value.trim();
-  if(!region || !state || !jamia || !code){ ibtResult.textContent = "Saari fields bharni hain."; return; }
+  const region = selRegion.value,
+        state = selState.value,
+        jamia = selJamia.value,
+        code = selCode.value.trim();
+
+  if(!region || !state || !jamia || !code){ 
+    ibtResult.textContent = "Saari fields bharni hain."; 
+    return; 
+  }
+
   const row = ibtData.find(r=>r.Region===region && r.State===state && r.Jamia===jamia && r.Code===code);
-  if(!row){ ibtResult.textContent = "Is code ka record nahi mila."; return; }
+  if(!row){ 
+    ibtResult.textContent = "Is code ka record nahi mila."; 
+    return; 
+  }
+
   const title = row.FileTitle || `${jamia} Result`;
   const dl = `https://drive.google.com/uc?id=${row.FileId}&export=download`;
   const view = `https://drive.google.com/file/d/${row.FileId}/view`;
+
   ibtResult.innerHTML = `
     <div class="row">
       <input type="text" value="${title}" readonly>
@@ -187,6 +217,9 @@ btnSearch.addEventListener('click', ()=>{
       <a href="${dl}"><button class="btn">Download PDF</button></a>
     </div>`;
 });
+
+// Jab page load ho to data load karo
+loadIbtidaiya();
 </script>
 
     <!-- Elamiya PDFs list -->
@@ -370,6 +403,7 @@ btnSearch.addEventListener('click', ()=>{
   </script>
 </body>
 </html>
+
 
 
 
