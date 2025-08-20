@@ -156,7 +156,7 @@ const CONFIG = {
 };
 
 async function fetchSheet(sheetName) {
-  const url = `https://opensheet.elk.sh/${1dZKwJ__vBMfv7fQqOOb8PHx8TQcBc6h9XPDkuucaBD0}/${Map}`;
+  const url = `https://opensheet.elk.sh/${CONFIG.IBTIDAIYA_MAP}/${Map}`;
   const response = await fetch(url);
   const data = await response.json();
   return data;
@@ -412,6 +412,7 @@ loadIbtidaiya();
   </script>
 </body>
 </html>
+
 
 
 
