@@ -152,18 +152,20 @@
 <script>
 // --- CONFIG: Apni Google Sheet ka ID daalo ---
 const CONFIG = {
-  IBTIDAIYA_MAP: "1AbCDefGhIjKlMnOpQRstUvWXyZ-1234567890"  // <-- yahan apna sheet ID
+  IBTIDAIYA_MAP: "1dZKwJ__vBMfv7fQqOOb8PHx8TQcBc6h9XPDkuucaBD0"
 };
 
-let ibtData = [];
-
-// --- Helper: Sheet fetch karna ---
-async function fetchSheet(sheetId, sheetName="Sheet1") {
-  const url = `https://opensheet.elk.sh/${1AbCDefGhIjKlMnOpQRstUvWXyZ-1234567890}/${Map}`;
-  const res = await fetch(url);
-  const rows = await res.json();
-  return {rows};
+async function fetchSheet(sheetName) {
+  const url = `https://opensheet.elk.sh/${CONFIG.IBTIDAIYA_MAP}/${Map}`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
 }
+
+// Example call
+fetchSheet("Map").then(data => {
+  console.log("Google Sheet Data:", data);
+});
 
 // --- Load initial data ---
 async function loadIbtidaiya(){
@@ -410,6 +412,7 @@ loadIbtidaiya();
   </script>
 </body>
 </html>
+
 
 
 
