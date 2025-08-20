@@ -187,7 +187,7 @@ sel-Region.addEventListener('change', ()=>{
 sel-State.addEventListener('change', ()=>{
   const state = selState.value;
   const jamias = [...new Set(ibtData.filter(r=>r.State===state).map(r=>r.Jamia))].sort();
-  sel-Jamia.innerHTML = '<option value="">Jamia select karein</option>' +
+  selJamia.innerHTML = '<option value="">Jamia select karein</option>' +
     jamias.map(v=>`<option>${v}</option>`).join('');
 });
 
@@ -412,6 +412,7 @@ loadIbtidaiya();
   </script>
 </body>
 </html>
+
 
 
 
