@@ -177,17 +177,17 @@ async function loadIbtidaiya(){
     regions.map(v=>`<option>${v}</option>`).join('');
 }
 
-selRegion.addEventListener('change', ()=>{
+sel-Region.addEventListener('change', ()=>{
   const region = selRegion.value;
   const states = [...new Set(ibtData.filter(r=>r.Region===region).map(r=>r.State))].sort();
   selState.innerHTML = '<option value="">State select karein</option>' +
     states.map(v=>`<option>${v}</option>`).join('');
 });
 
-selState.addEventListener('change', ()=>{
+sel-State.addEventListener('change', ()=>{
   const state = selState.value;
   const jamias = [...new Set(ibtData.filter(r=>r.State===state).map(r=>r.Jamia))].sort();
-  selJamia.innerHTML = '<option value="">Jamia select karein</option>' +
+  sel-Jamia.innerHTML = '<option value="">Jamia select karein</option>' +
     jamias.map(v=>`<option>${v}</option>`).join('');
 });
 
@@ -412,6 +412,7 @@ loadIbtidaiya();
   </script>
 </body>
 </html>
+
 
 
 
