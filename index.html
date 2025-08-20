@@ -226,7 +226,12 @@
     }
 
     function escapeHtml(s){
-  return String(s).replace(/[&<>"]/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m]));
+  return String(s).replace(/[&<>"]/g, m => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;"
+  }[m]));
 }
 
     // Load three sheet tables
@@ -324,5 +329,6 @@
   </script>
 </body>
 </html>
+
 
 
