@@ -150,37 +150,38 @@
 </section>
 
 <script>
+// --- CONFIG: Apni Google Sheet ka ID daalo ---
+const CONFIG = {
+  IBTIDAIYA_MAP: "1AbCDefGhIjKlMnOpQRstUvWXyZ-1234567890"  // <-- yahan apna sheet ID
+};
+
 let ibtData = [];
 
-// sabhi elements ko bind karo
-const selRegion = document.getElementById("sel-region");
-const selState = document.getElementById("sel-state");
-const selJamia = document.getElementById("sel-jamia");
-const selCode = document.getElementById("sel-code");
-const btnSearch = document.getElementById("btn-search");
-const ibtResult = document.getElementById("ibt-result");
+// --- Helper: Sheet fetch karna ---
+async function fetchSheet(sheetId, sheetName="Sheet1") {
+  const url = `https://opensheet.elk.sh/${1AbCDefGhIjKlMnOpQRstUvWXyZ-1234567890}/${Map}`;
+  const res = await fetch(url);
+  const rows = await res.json();
+  return {rows};
+}
 
-// Load mapping sheet
+// --- Load initial data ---
 async function loadIbtidaiya(){
-  const {rows} = await fetchSheet(CONFIG.IBTIDAIYA_MAP);
+  const {rows} = await fetchSheet(CONFIG.IBTIDAIYA_MAP, "Mapping");
   ibtData = rows.filter(r=>r.Region && r.State && r.Jamia && r.Code);
 
-  // Region fill
   const regions = [...new Set(ibtData.map(r=>r.Region))].sort();
   selRegion.innerHTML = '<option value="">Region select karein</option>' +
     regions.map(v=>`<option>${v}</option>`).join('');
 }
 
-// Region change → States fill
 selRegion.addEventListener('change', ()=>{
   const region = selRegion.value;
   const states = [...new Set(ibtData.filter(r=>r.Region===region).map(r=>r.State))].sort();
   selState.innerHTML = '<option value="">State select karein</option>' +
     states.map(v=>`<option>${v}</option>`).join('');
-  selJamia.innerHTML = '<option value="">Jamia select karein</option>'; // reset
 });
 
-// State change → Jamia fill
 selState.addEventListener('change', ()=>{
   const state = selState.value;
   const jamias = [...new Set(ibtData.filter(r=>r.State===state).map(r=>r.Jamia))].sort();
@@ -188,22 +189,28 @@ selState.addEventListener('change', ()=>{
     jamias.map(v=>`<option>${v}</option>`).join('');
 });
 
-// Search button
+// --- Search button ---
 btnSearch.addEventListener('click', ()=>{
   const region = selRegion.value,
         state = selState.value,
         jamia = selJamia.value,
         code = selCode.value.trim();
 
-  if(!region || !state || !jamia || !code){ 
-    ibtResult.textContent = "Saari fields bharni hain."; 
-    return; 
+  if(!region || !state || !jamia || !code){
+    ibtResult.textContent = "⚠️ Saari fields bharni hain.";
+    return;
   }
 
-  const row = ibtData.find(r=>r.Region===region && r.State===state && r.Jamia===jamia && r.Code===code);
-  if(!row){ 
-    ibtResult.textContent = "Is code ka record nahi mila."; 
-    return; 
+  const row = ibtData.find(r=>
+    r.Region===region &&
+    r.State===state &&
+    r.Jamia===jamia &&
+    r.Code===code
+  );
+
+  if(!row){
+    ibtResult.textContent = "❌ Is code ka record nahi mila.";
+    return;
   }
 
   const title = row.FileTitle || `${jamia} Result`;
@@ -211,14 +218,14 @@ btnSearch.addEventListener('click', ()=>{
   const view = `https://drive.google.com/file/d/${row.FileId}/view`;
 
   ibtResult.innerHTML = `
-    <div class="row">
+    <div class="row" style="gap:8px;flex-wrap:wrap">
       <input type="text" value="${title}" readonly>
       <a href="${view}" target="_blank"><button class="btn secondary">Open in Drive</button></a>
       <a href="${dl}"><button class="btn">Download PDF</button></a>
     </div>`;
 });
 
-// Jab page load ho to data load karo
+// --- Page load par initialize ---
 loadIbtidaiya();
 </script>
 
@@ -403,6 +410,7 @@ loadIbtidaiya();
   </script>
 </body>
 </html>
+
 
 
 
