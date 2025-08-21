@@ -226,7 +226,7 @@
       $('#elamiya-error').classList.add('hide');
       $('#elamiya-list').innerHTML = '';
 
-      const url = `https://www.googleapis.com/drive/v3/files?q='${CONFIG.ELAMIYA_FOLDER_ID}'+in+parents+and+mimeType='application/pdf'&key=${CONFIG.DRIVE_API_KEY}&fields=files(id,name,modifiedTime,webViewLink)`;
+      const url = `https://www.googleapis.com/drive/v3/files?q='${1zc1AHSzcsYdAO7Ni_bdQGNXET7bLk7JW}'+in+parents+and+mimeType='application/pdf'&key=${CONFIG.DRIVE_API_KEY}&fields=files(id,name,modifiedTime,webViewLink)`;
       const res = await fetch(url);
       if (!res.ok) throw new Error("Drive API error");
       const data = await res.json();
@@ -259,6 +259,7 @@
 </script>
 </body>
 </html>
+
 
 
 
