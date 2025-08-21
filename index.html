@@ -709,121 +709,157 @@
     }
 
     // Load all tables with error handling
-  async function loadTables() {
-    // ---------------- TALIMI ----------------
-try {
-    $('#talimi-loading').classList.remove('hide');
-    $('#talimi-error').classList.add('hide');   // 🔹 Pehle hide
-    $('#talimi-table').classList.add('hide');
-
-    const t1 = await fetchSheet(CONFIG.TALIMI);
-    renderTable('talimi-th', 'talimi-tb', t1.cols, t1.rows);
-
-    $('#talimi-loading').classList.add('hide');
-    $('#talimi-error').classList.add('hide');   // 🔹 Success pe bhi hide
-    $('#talimi-table').classList.remove('hide');
-
-} catch (e) {
-    $('#talimi-loading').classList.add('hide');
-    $('#talimi-error').classList.remove('hide');   // 🔹 Error pe show
-}
-
-
-// ---------------- JAIZA ----------------
-try {
-    $('#jaiza-loading').classList.remove('hide');
-    $('#jaiza-error').classList.add('hide');
-    $('#jaiza-table').classList.add('hide');
-
-    const j1 = await fetchSheet(CONFIG.JAIZA);
-    renderTable('jaiza-th', 'jaiza-tb', j1.cols, j1.rows);
-
-    $('#jaiza-loading').classList.add('hide');
-    $('#jaiza-error').classList.add('hide');
-    $('#jaiza-table').classList.remove('hide');
-
-} catch (e) {
-    $('#jaiza-loading').classList.add('hide');
-    $('#jaiza-error').classList.remove('hide');
-}
-
-
-// ---------------- MAHANA ----------------
-try {
-    $('#mahana-loading').classList.remove('hide');
-    $('#mahana-error').classList.add('hide');
-    $('#mahana-table').classList.add('hide');
-
-    const m1 = await fetchSheet(CONFIG.MAHANA);
-    renderTable('mahana-th', 'mahana-tb', m1.cols, m1.rows);
-
-    $('#mahana-loading').classList.add('hide');
-    $('#mahana-error').classList.add('hide');
-    $('#mahana-table').classList.remove('hide');
-
-} catch (e) {
-    $('#mahana-loading').classList.add('hide');
-    $('#mahana-error').classList.remove('hide');
-}
-
-
-// ---------------- ELAMIYA ----------------
-try {
-    $('#elamiya-loading').classList.remove('hide');
-    $('#elamiya-error').classList.add('hide');
-    $('#elamiya-table').classList.add('hide');
-
-    const e1 = await fetchSheet(CONFIG.ELAMIYA);
-    renderTable('elamiya-th', 'elamiya-tb', e1.cols, e1.rows);
-
-    $('#elamiya-loading').classList.add('hide');
-    $('#elamiya-error').classList.add('hide');
-    $('#elamiya-table').classList.remove('hide');
-
-} catch (e) {
-    $('#elamiya-loading').classList.add('hide');
-    $('#elamiya-error').classList.remove('hide');
-}
+    async function loadTables() {
+      try {
+        // Show loading state for Talimi
+        $('#talimi-loading').classList.remove('hide');
+        $('#talimi-error').classList.add('hide');
+        $('#talimi-table').classList.add('hide');
+        
+        const t1 = await fetchSheet(CONFIG.TALIMI);
+        renderTable('talimi-th', 'talimi-tb', t1.cols, t1.rows);
+        
+        // Hide loading, show table
+        $('#talimi-loading').classList.add('hide');
+        $('#talimi-table').classList.remove('hide');
+        
+        // Setup search for Talimi table (search all columns)
+        setupTableSearch('talimi-search', 'talimi-tb', []);
+      } catch(e) { 
+        console.warn('Talimi load error', e);
+        $('#talimi-loading').classList.add('hide');
+        $('#talimi-error').classList.remove('hide');
+      }
+      
+      try {
+        // Show loading state for Jaiza
+        $('#jaiza-loading').classList.remove('hide');
+        $('#jaiza-error').classList.add('hide');
+        $('#jaiza-table').classList.add('hide');
+        
+        const t2 = await fetchSheet(CONFIG.JAIZA);
+        renderTable('jaiza-th', 'jaiza-tb', t2.cols, t2.rows);
+        
+        // Hide loading, show table
+        $('#jaiza-loading').classList.add('hide');
+        $('#jaiza-table').classList.remove('hide');
+      } catch(e) { 
+        console.warn('Jaiza load error', e);
+        $('#jaiza-loading').classList.add('hide');
+        $('#jaiza-error').classList.remove('hide');
+      }
+      
+      try {
+        // Show loading state for Mahana
+        $('#mahana-loading').classList.remove('hide');
+        $('#mahana-error').classList.add('hide');
+        $('#mahana-table').classList.add('hide');
+        
+        const t3 = await fetchSheet(CONFIG.MAHANA);
+        renderTable('mahana-th', 'mahana-tb', t3.cols, t3.rows);
+        
+        // Hide loading, show table
+        $('#mahana-loading').classList.add('hide');
+        $('#mahana-table').classList.remove('hide');
+      } catch(e) { 
+        console.warn('Mahana load error', e);
+        $('#mahana-loading').classList.add('hide');
+        $('#mahana-error').classList.remove('hide');
+      }
+    }
 
     // Load Elamiya PDFs from Google Drive
-  async function loadElamiya() {
-    try {
+    async function loadElamiya() {
+      const key = CONFIG.DRIVE_API_KEY;
+      const folder = CONFIG.ELAMIYA_FOLDER_ID;
+      
+      // Show loading state
       $('#elamiya-loading').classList.remove('hide');
       $('#elamiya-error').classList.add('hide');
-      $('#elamiya-list').innerHTML = '';
-
-      const url = `https://www.googleapis.com/drive/v3/files?q='${CONFIG.ELAMIYA_FOLDER_ID}'+in+parents+and+mimeType='application/pdf'&key=${CONFIG.DRIVE_API_KEY}&fields=files(id,name,modifiedTime,webViewLink)`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("Drive API error");
-      const data = await res.json();
-
-      if (!data.files || data.files.length === 0) {
-        $('#elamiya-list').innerHTML = '<div class="empty-state">No PDFs found</div>';
-      } else {
-        $('#elamiya-list').innerHTML = data.files.map(f => `
-          <div class="col-4">
-            <div class="card pdf-card">
-              <h3 title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</h3>
-              <div class="pdf-meta">Last updated: ${new Date(f.modifiedTime).toLocaleDateString()}</div>
-              <a href="${f.webViewLink}" target="_blank" class="btn secondary" style="margin-top:12px;">Download</a>
-            </div>
-          </div>
-        `).join('');
+      
+      if (!key || key === "YOUR_PUBLIC_API_KEY" || !folder || folder === "YOUR_FOLDER_ID") {
+        $('#elamiya-loading').classList.add('hide');
+        $('#elamiya-error').classList.remove('hide');
+        $('#elamiya-error span').textContent = 'DRIVE_API_KEY ya FOLDER_ID set karein.';
+        return;
       }
-
-      $('#elamiya-loading').classList.add('hide');
-    } catch (err) {
-      console.error(err);
-      $('#elamiya-loading').classList.add('hide');
-      $('#elamiya-error').classList.remove('hide');
+      
+      try {
+        const q = encodeURIComponent(`'${folder}' in parents and mimeType='application/pdf' and trashed=false`);
+        const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,webViewLink,createdTime,size)&orderBy=createdTime desc&key=${key}`;
+        const res = await fetch(url);
+        
+        if (!res.ok) {
+          throw new Error(`Drive API error: ${res.status}`);
+        }
+        
+        const json = await res.json();
+        const files = json.files || [];
+        const grid = document.getElementById('elamiya-list');
+        
+        // Hide loading
+        $('#elamiya-loading').classList.add('hide');
+        
+        if (!files.length) {
+          grid.innerHTML = '<div class="col-12"><div class="empty-state"><svg width="48" height="48" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg><p>Koi PDF nahi mili (folder public hona chahiye).</p></div></div>';
+          return;
+        }
+        
+        grid.innerHTML = files.map(f => {
+          const dl = `https://drive.google.com/uc?id=${encodeURIComponent(f.id)}&export=download`;
+          const created = f.createdTime ? new Date(f.createdTime).toLocaleDateString() : '';
+          const size = f.size ? formatFileSize(f.size) : '';
+          
+          return `
+            <div class="col-4">
+              <div class="card pdf-card">
+                <h3 title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</h3>
+                <div class="pdf-meta">
+                  ${created} ${size ? `• ${size}` : ''}
+                </div>
+                <div class="row" style="margin-top: 16px;">
+                  <a href="${f.webViewLink}" target="_blank" rel="noopener">
+                    <button class="btn secondary">
+                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/></svg>
+                      Open
+                    </button>
+                  </a>
+                  <a href="${dl}" download="${escapeHtml(f.name)}">
+                    <button class="btn">
+                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
+                      Download
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch(e) {
+        console.error('Drive API error', e);
+        $('#elamiya-loading').classList.add('hide');
+        $('#elamiya-error').classList.remove('hide');
+        $('#elamiya-error span').textContent = 'Drive API error. API key / Access check karein.';
+      }
     }
-  }
 
-  // Call loaders
-  loadTables();
-  loadElamiya();
-</script>
+    // Format file size to human readable format
+    function formatFileSize(bytes) {
+      if (!bytes) return '';
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      if (bytes === 0) return '0 Bytes';
+      const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+      return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    }
+
+    // Initialize the application
+    (async function init() {
+      // Load tables and Elamiya PDFs
+      await Promise.allSettled([
+        loadTables(),
+        loadElamiya()
+      ]);
+    })();
+  </script>
 </body>
 </html>
-
-
