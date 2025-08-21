@@ -220,32 +220,46 @@
       }catch(e){ console.warn('Mahana load error', e); }
     }
 
-    async function loadElamiya(){
-      const key = CONFIG.DRIVE_API_KEY; const folder = CONFIG.ELAMIYA_FOLDER_ID;
-      if(!key || !folder){ document.getElementById('elamiya-list').innerHTML = '<p class="muted">DRIVE_API_KEY ya FOLDER_ID set karein.</p>'; return; }
-      try{
-        const q = encodeURIComponent(`'${folder}' in parents and mimeType='application/pdf' and trashed=false`);
-        const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,webViewLink,createdTime)&orderBy=createdTime desc&key=${key}`;
-        const res = await fetch(url); const json = await res.json();
-        const files = json.files || [];
-        const grid = document.getElementById('elamiya-list');
-        if(!files.length){ grid.innerHTML = '<p class="muted">Koi PDF nahi mili (folder public hona chahiye).</p>'; return; }
-        grid.innerHTML = files.map(f=>{
-          const dl = `https://drive.google.com/uc?id=${encodeURIComponent(f.id)}&export=download`;
-          return `<div class="col-4"><div class="card"><h3>${escapeHtml(f.name)}</h3><div class="row"><a href="${f.webViewLink}" target="_blank"><button class="btn secondary">Open</button></a><a href="${dl}"><button class="btn">Download</button></a></div></div></div>`;
-        }).join('');
-      }catch(e){
-        document.getElementById('elamiya-list').innerHTML = '<p class="muted">Drive API error. API key / Access check karein.</p>';
-      }
-    }
+    async function loadElamiya() {
+    try {
+      $('#elamiya-loading').classList.remove('hide');
+      $('#elamiya-error').classList.add('hide');
+      $('#elamiya-list').innerHTML = '';
 
-    (async function init(){
-      await loadTables();
-      await loadElamiya();
-    })();
-  </script>
+      const url = `https://www.googleapis.com/drive/v3/files?q='${CONFIG.ELAMIYA_FOLDER_ID}'+in+parents+and+mimeType='application/pdf'&key=${CONFIG.DRIVE_API_KEY}&fields=files(id,name,modifiedTime,webViewLink)`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Drive API error");
+      const data = await res.json();
+
+      if (!data.files || data.files.length === 0) {
+        $('#elamiya-list').innerHTML = '<div class="empty-state">No PDFs found</div>';
+      } else {
+        $('#elamiya-list').innerHTML = data.files.map(f => `
+          <div class="col-4">
+            <div class="card pdf-card">
+              <h3 title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</h3>
+              <div class="pdf-meta">Last updated: ${new Date(f.modifiedTime).toLocaleDateString()}</div>
+              <a href="${f.webViewLink}" target="_blank" class="btn secondary" style="margin-top:12px;">Download</a>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      $('#elamiya-loading').classList.add('hide');
+    } catch (err) {
+      console.error(err);
+      $('#elamiya-loading').classList.add('hide');
+      $('#elamiya-error').classList.remove('hide');
+    }
+  }
+
+  // Call loaders
+  loadTables();
+  loadElamiya();
+</script>
 </body>
 </html>
+
 
 
 
