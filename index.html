@@ -709,64 +709,47 @@
     }
 
     // Load all tables with error handling
-    async function loadTables() {
-      try {
-        // Show loading state for Talimi
-        $('#talimi-loading').classList.remove('hide');
-        $('#talimi-error').classList.add('hide');
-        $('#talimi-table').classList.add('hide');
-        
-        const t1 = await fetchSheet(CONFIG.TALIMI);
-        renderTable('talimi-th', 'talimi-tb', t1.cols, t1.rows);
-        
-        // Hide loading, show table
-        $('#talimi-loading').classList.add('hide');
-        $('#talimi-table').classList.remove('hide');
-        
-        // Setup search for Talimi table (search all columns)
-        setupTableSearch('talimi-search', 'talimi-tb', []);
-      } catch(e) { 
-        console.warn('Talimi load error', e);
-        $('#talimi-loading').classList.add('hide');
-        $('#talimi-error').classList.remove('hide');
-      }
-      
-      try {
-        // Show loading state for Jaiza
-        $('#jaiza-loading').classList.remove('hide');
-        $('#jaiza-error').classList.add('hide');
-        $('#jaiza-table').classList.add('hide');
-        
-        const t2 = await fetchSheet(CONFIG.JAIZA);
-        renderTable('jaiza-th', 'jaiza-tb', t2.cols, t2.rows);
-        
-        // Hide loading, show table
-        $('#jaiza-loading').classList.add('hide');
-        $('#jaiza-table').classList.remove('hide');
-      } catch(e) { 
-        console.warn('Jaiza load error', e);
-        $('#jaiza-loading').classList.add('hide');
-        $('#jaiza-error').classList.remove('hide');
-      }
-      
-      try {
-        // Show loading state for Mahana
-        $('#mahana-loading').classList.remove('hide');
-        $('#mahana-error').classList.add('hide');
-        $('#mahana-table').classList.add('hide');
-        
-        const t3 = await fetchSheet(CONFIG.MAHANA);
-        renderTable('mahana-th', 'mahana-tb', t3.cols, t3.rows);
-        
-        // Hide loading, show table
-        $('#mahana-loading').classList.add('hide');
-        $('#mahana-table').classList.remove('hide');
-      } catch(e) { 
-        console.warn('Mahana load error', e);
-        $('#mahana-loading').classList.add('hide');
-        $('#mahana-error').classList.remove('hide');
-      }
+  async function loadTables() {
+    try {
+      // Talimi
+      $('#talimi-loading').classList.remove('hide');
+      $('#talimi-error').classList.add('hide');
+      $('#talimi-table').classList.add('hide');
+      const t1 = await fetchSheet(CONFIG.TALIMI);
+      renderTable('talimi-th', 'talimi-tb', t1.cols, t1.rows);
+      $('#talimi-loading').classList.add('hide');
+      $('#talimi-table').classList.remove('hide');
+      setupTableSearch('talimi-search', 'talimi-tb', []);
+
+      // Jaiza
+      $('#jaiza-loading').classList.remove('hide');
+      $('#jaiza-error').classList.add('hide');
+      $('#jaiza-table').classList.add('hide');
+      const t2 = await fetchSheet(CONFIG.JAIZA);
+      renderTable('jaiza-th', 'jaiza-tb', t2.cols, t2.rows);
+      $('#jaiza-loading').classList.add('hide');
+      $('#jaiza-table').classList.remove('hide');
+
+      // Mahana
+      $('#mahana-loading').classList.remove('hide');
+      $('#mahana-error').classList.add('hide');
+      $('#mahana-table').classList.add('hide');
+      const t3 = await fetchSheet(CONFIG.MAHANA);
+      renderTable('mahana-th', 'mahana-tb', t3.cols, t3.rows);
+      $('#mahana-loading').classList.add('hide');
+      $('#mahana-table').classList.remove('hide');
+
+    } catch (err) {
+      console.error(err);
+      // Show error messages
+      $('#talimi-loading').classList.add('hide');
+      $('#talimi-error').classList.remove('hide');
+      $('#jaiza-loading').classList.add('hide');
+      $('#jaiza-error').classList.remove('hide');
+      $('#mahana-loading').classList.add('hide');
+      $('#mahana-error').classList.remove('hide');
     }
+  }
 
     // Load Elamiya PDFs from Google Drive
   async function loadElamiya() {
@@ -808,3 +791,4 @@
 </script>
 </body>
 </html>
+
