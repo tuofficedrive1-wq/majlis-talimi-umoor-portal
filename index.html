@@ -8,84 +8,435 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#0b3a33;
-      --bg-2:#0f4a43;
-      --primary:#12b886;
-      --text:#0b3a33;
-      --muted:#6b7280;
-      --card:#ffffff;
+    :root {
+      --bg: #0b3a33;
+      --bg-2: #0f4a43;
+      --primary: #12b886;
+      --primary-dark: #0ca678;
+      --text: #0b3a33;
+      --muted: #6b7280;
+      --card: #ffffff;
+      --error: #ff6b6b;
+      --success: #40c057;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;background:#f4f7f7;color:var(--text)}
-    a{color:var(--primary);text-decoration:none}
-    .container{max-width:1200px;margin:0 auto;padding:16px}
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html, body {
+      font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+      background: #f4f7f7;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    
+    a:hover {
+      color: var(--primary-dark);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    
     /* Header */
-    .topbar{background:var(--bg);color:#e8fffb}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand-logo{width:44px;height:44px;border-radius:12px;background:#e7fff7;display:grid;place-items:center;color:var(--bg);font-weight:700}
-    .brand h1{font-size:20px;margin:0}
-    .nav{display:flex;gap:8px;flex-wrap:wrap}
-    .nav button{border:0;background:transparent;color:#e7fff7;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:500}
-    .nav button.active, .nav button:hover{background:#0f4a43}
-    .header{position:sticky;top:0;z-index:20}
-
+    .topbar {
+      background: var(--bg);
+      color: #e8fffb;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #e7fff7;
+      display: grid;
+      place-items: center;
+      color: var(--bg);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    
+    .brand h1 {
+      font-size: 20px;
+      margin: 0;
+    }
+    
+    .nav {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+    
+    .nav button {
+      border: 0;
+      background: transparent;
+      color: #e7fff7;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .nav button.active, .nav button:hover {
+      background: var(--bg-2);
+    }
+    
     /* Hero */
-    .hero{background:linear-gradient(120deg,#eafff7,#f8fffd);border:1px solid #d8f5e5;border-radius:20px;padding:32px;display:flex;gap:20px;align-items:center}
-    .hero .badge{display:inline-block;background:#e6fcf5;color:var(--bg);padding:6px 10px;border-radius:999px;font-size:12px;font-weight:600;border:1px solid #c3fae8}
-    .hero h2{margin:10px 0 6px 0;font-size:28px}
-    .hero p{margin:0;color:var(--muted)}
-
+    .hero {
+      background: linear-gradient(120deg, #eafff7, #f8fffd);
+      border: 1px solid #d8f5e5;
+      border-radius: 20px;
+      padding: 32px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    
+    .hero .badge {
+      display: inline-block;
+      background: #e6fcf5;
+      color: var(--bg);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid #c3fae8;
+    }
+    
+    .hero h2 {
+      margin: 10px 0 6px 0;
+      font-size: 28px;
+    }
+    
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+    }
+    
     /* Cards */
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-    .col-12{grid-column:span 12}
-    .col-6{grid-column:span 6}
-    .col-4{grid-column:span 4}
-    @media (max-width:900px){.col-6,.col-4{grid-column:span 12}}
-    .card{background:var(--card);border:1px solid #e6e6e6;border-radius:16px;padding:16px;box-shadow:0 6px 20px rgba(0,0,0,.05)}
-    .card h3{margin:0 0 10px 0;font-size:18px}
-
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+    
+    .col-12 {
+      grid-column: span 12;
+    }
+    
+    .col-6 {
+      grid-column: span 6;
+    }
+    
+    .col-4 {
+      grid-column: span 4;
+    }
+    
+    @media (max-width: 900px) {
+      .col-6, .col-4 {
+        grid-column: span 12;
+      }
+      
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px;
+      }
+      
+      .nav {
+        justify-content: center;
+        margin-top: 10px;
+      }
+      
+      .topbar .container {
+        flex-direction: column;
+        padding: 10px;
+      }
+    }
+    
+    .card {
+      background: var(--card);
+      border: 1px solid #e6e6e6;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+    
+    .card h3 {
+      margin: 0 0 12px 0;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
     /* Table */
-    table{width:100%;border-collapse:collapse}
-    thead th{position:sticky;top:0;background:#f5fffb;border-bottom:1px solid #e9ecef;text-align:left;padding:10px;font-size:13px}
-    tbody td{border-bottom:1px solid #f1f3f5;padding:10px;font-size:13px}
-    .table-wrap{max-height:420px;overflow:auto;border:1px solid #eef3f2;border-radius:12px}
-
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    thead th {
+      position: sticky;
+      top: 0;
+      background: #f5fffb;
+      border-bottom: 1px solid #e9ecef;
+      text-align: left;
+      padding: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    
+    tbody td {
+      border-bottom: 1px solid #f1f3f5;
+      padding: 12px;
+      font-size: 13px;
+    }
+    
+    tbody tr:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .table-wrap {
+      max-height: 420px;
+      overflow: auto;
+      border: 1px solid #eef3f2;
+      border-radius: 12px;
+      margin-top: 16px;
+    }
+    
     /* Selects */
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .row > *{flex:1 1 220px}
-    select,input[type="text"]{width:100%;padding:10px 12px;border:1px solid #e5e7eb;border-radius:12px;background:#fff}
-    button.btn{background:var(--bg);color:#eafff8;border:0;padding:10px 14px;border-radius:12px;cursor:pointer}
-    button.btn.secondary{background:#e8faf3;color:var(--bg);border:1px solid #b2f2e8}
-    .muted{color:var(--muted)}
-
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    
+    .row > * {
+      flex: 1 1 220px;
+    }
+    
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      background: #fff;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    
+    select:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(18, 184, 134, 0.2);
+    }
+    
+    button.btn {
+      background: var(--bg);
+      color: #eafff8;
+      border: 0;
+      padding: 10px 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    
+    button.btn:hover {
+      background: var(--bg-2);
+      transform: translateY(-1px);
+    }
+    
+    button.btn.secondary {
+      background: #e8faf3;
+      color: var(--bg);
+      border: 1px solid #b2f2e8;
+    }
+    
+    button.btn.secondary:hover {
+      background: #d8f5eb;
+    }
+    
+    .muted {
+      color: var(--muted);
+    }
+    
     /* Footer */
-    footer{margin:40px 0 20px 0;color:#7a8b87;text-align:center}
-    .hide{display:none}
+    footer {
+      margin: 40px 0 20px 0;
+      color: #7a8b87;
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+    }
+    
+    .hide {
+      display: none;
+    }
+    
+    /* Loading and error states */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(18, 184, 134, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .error-message {
+      background: #fff5f5;
+      color: var(--error);
+      padding: 12px;
+      border-radius: 8px;
+      border-left: 4px solid var(--error);
+      margin: 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .success-message {
+      background: #ebfbee;
+      color: var(--success);
+      padding: 12px;
+      border-radius: 8px;
+      border-left: 4px solid var(--success);
+      margin: 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+    
+    .empty-state svg {
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+    
+    /* Search and filter */
+    .search-box {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    
+    .search-box input {
+      padding-left: 40px;
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+    
+    /* PDF card styles */
+    .pdf-card {
+      transition: all 0.2s;
+    }
+    
+    .pdf-card:hover {
+      transform: translateY(-4px);
+    }
+    
+    .pdf-card h3 {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .pdf-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
   </style>
 </head>
 <body>
   <!-- Header + Nav -->
-  <div class="topbar header">
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 16px">
+  <div class="topbar">
+    <div class="container" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 16px;">
       <div class="brand">
         <div class="brand-logo">MTU</div>
         <div>
           <h1>Majlis Talimi Umoor — Dashboard</h1>
-          <div class="muted" style="font-size:12px">Education Portal</div>
+          <div class="muted" style="font-size: 12px;">Education Portal</div>
         </div>
       </div>
       <nav class="nav" id="nav">
-        <button data-tab="home" class="active">Home</button>
-        <button data-tab="talimi">Talimi Zimedaran</button>
-        <button data-tab="jaiza">Jaiza Report</button>
-        <button data-tab="mahana">Mahana Test Report</button>
-        <button data-tab="elamiya">Elamiya</button>
+        <button data-tab="home" class="active">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/><path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/></svg>
+          Home
+        </button>
+        <button data-tab="talimi">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/></svg>
+          Talimi Zimedaran
+        </button>
+        <button data-tab="jaiza">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M9.5 12.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1zm0-3h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zm0-3h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1z"/></svg>
+          Jaiza Report
+        </button>
+        <button data-tab="mahana">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M11.5 12.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zm0-3h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zm0-3h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1z"/></svg>
+          Mahana Test Report
+        </button>
+        <button data-tab="elamiya">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8.5 5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5z"/><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg>
+          Elamiya
+        </button>
       </nav>
     </div>
   </div>
 
-  <main class="container" style="margin-top:18px">
+  <main class="container" style="margin-top: 18px;">
     <!-- Home -->
     <section id="tab-home">
       <div class="hero">
@@ -95,15 +446,33 @@
           <p>Is portal me aap Talimi Zimedaran, Jaiza Report, Mahana Test Report aur Elamiya ki PDFs asaani se dekh sakte hain.</p>
         </div>
       </div>
-      <div class="grid" style="margin-top:16px">
+      <div class="grid" style="margin-top: 16px;">
         <div class="col-4">
-          <div class="card"><h3>• INDIA KE TOTAL JAMIAAT •</h3><p class="muted">144.</p></div>
+          <div class="card">
+            <h3>
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+              INDIA KE TOTAL JAMIAAT
+            </h3>
+            <p class="muted">144</p>
+          </div>
         </div>
         <div class="col-4">
-          <div class="card"><h3>TOTAL ASATIZAE KIRAM</h3><p class="muted">0000.</p></div>
+          <div class="card">
+            <h3>
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/><path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/></svg>
+              TOTAL ASATIZAE KIRAM
+            </h3>
+            <p class="muted">0000</p>
+          </div>
         </div>
         <div class="col-4">
-          <div class="card"><h3>TOTAL STUDENTS</h3><p class="muted">00000.</p></div>
+          <div class="card">
+            <h3>
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.207V8.5a.5.5 0 0 1-1 0V6.207L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z"/></svg>
+              TOTAL STUDENTS
+            </h3>
+            <p class="muted">00000</p>
+          </div>
         </div>
       </div>
     </section>
@@ -113,7 +482,30 @@
       <div class="card">
         <h3>Talimi Zimedaran</h3>
         <p class="muted">Zimmedaran Ki Tafsil.</p>
-        <div class="table-wrap"><table><thead id="talimi-th"></thead><tbody id="talimi-tb"></tbody></table></div>
+        
+        <div class="search-box">
+          <div class="search-icon">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+          </div>
+          <input type="text" id="talimi-search" placeholder="Search Talimi Zimedaran..." />
+        </div>
+        
+        <div id="talimi-loading" class="empty-state">
+          <div class="loading" style="margin: 0 auto;"></div>
+          <p>Loading data...</p>
+        </div>
+        
+        <div id="talimi-error" class="error-message hide">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
+          <span>Error loading data. Please check your connection and try again.</span>
+        </div>
+        
+        <div class="table-wrap hide" id="talimi-table">
+          <table>
+            <thead id="talimi-th"></thead>
+            <tbody id="talimi-tb"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -121,7 +513,23 @@
     <section id="tab-jaiza" class="hide">
       <div class="card">
         <h3>Jaiza Report — Sheet Data</h3>
-        <div class="table-wrap"><table><thead id="jaiza-th"></thead><tbody id="jaiza-tb"></tbody></table></div>
+        
+        <div id="jaiza-loading" class="empty-state">
+          <div class="loading" style="margin: 0 auto;"></div>
+          <p>Loading data...</p>
+        </div>
+        
+        <div id="jaiza-error" class="error-message hide">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
+          <span>Error loading data. Please check your connection and try again.</span>
+        </div>
+        
+        <div class="table-wrap hide" id="jaiza-table">
+          <table>
+            <thead id="jaiza-th"></thead>
+            <tbody id="jaiza-tb"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -129,7 +537,23 @@
     <section id="tab-mahana" class="hide">
       <div class="card">
         <h3>Mahana Test Report — Sheet Data</h3>
-        <div class="table-wrap"><table><thead id="mahana-th"></thead><tbody id="mahana-tb"></tbody></table></div>
+        
+        <div id="mahana-loading" class="empty-state">
+          <div class="loading" style="margin: 0 auto;"></div>
+          <p>Loading data...</p>
+        </div>
+        
+        <div id="mahana-error" class="error-message hide">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
+          <span>Error loading data. Please check your connection and try again.</span>
+        </div>
+        
+        <div class="table-wrap hide" id="mahana-table">
+          <table>
+            <thead id="mahana-th"></thead>
+            <tbody id="mahana-tb"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -138,7 +562,18 @@
       <div class="card">
         <h3>Elamiya — PDF Downloads</h3>
         <p class="muted">Ye list Google Drive folder (public) se aa rahi hogi.</p>
-        <div id="elamiya-list" class="grid" style="margin-top:8px"></div>
+        
+        <div id="elamiya-loading" class="empty-state">
+          <div class="loading" style="margin: 0 auto;"></div>
+          <p>Loading PDF files...</p>
+        </div>
+        
+        <div id="elamiya-error" class="error-message hide">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
+          <span>Error loading PDF files. Please check your API configuration.</span>
+        </div>
+        
+        <div id="elamiya-list" class="grid" style="margin-top: 8px;"></div>
       </div>
     </section>
   </main>
@@ -159,74 +594,188 @@
       ELAMIYA_FOLDER_ID: "YOUR_FOLDER_ID"
     };
 
-    const $ = (x)=>document.querySelector(x);
+    const $ = (x) => document.querySelector(x);
+    const $$ = (x) => document.querySelectorAll(x);
 
-    function tabSwitch(id){
-      document.querySelectorAll('main section').forEach(sec=>sec.classList.add('hide'));
-      document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
-      document.getElementById('tab-'+id).classList.remove('hide');
+    // Tab switching functionality
+    function tabSwitch(id) {
+      document.querySelectorAll('main section').forEach(sec => sec.classList.add('hide'));
+      document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.remove('hide');
       document.querySelector(`.nav button[data-tab="${id}"]`).classList.add('active');
+      
+      // Store the last active tab in localStorage
+      localStorage.setItem('lastActiveTab', id);
     }
 
+    // Initialize the page
     document.getElementById('yr').textContent = new Date().getFullYear();
+    
+    // Check if there's a last active tab in localStorage
+    const lastActiveTab = localStorage.getItem('lastActiveTab');
+    if (lastActiveTab) {
+      tabSwitch(lastActiveTab);
+    }
 
-    document.getElementById('nav').addEventListener('click', (e)=>{
-      if(e.target.matches('button[data-tab]')){
+    document.getElementById('nav').addEventListener('click', (e) => {
+      if (e.target.matches('button[data-tab]')) {
         tabSwitch(e.target.dataset.tab);
       }
     });
 
-    // Google Sheets fetch
-    async function fetchSheet({SHEET_ID, SHEET_NAME}, query="select *"){
+    // Google Sheets fetch with error handling
+    async function fetchSheet({SHEET_ID, SHEET_NAME}, query = "select *") {
       const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&tq=${encodeURIComponent(query)}`;
       const res = await fetch(url);
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       const text = await res.text();
-      const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}')+1));
-      const cols = json.table.cols.map(c=>c.label || c.id || '');
-      const rows = json.table.rows.map(r=>{
-        const obj = {}; r.c.forEach((c,i)=> obj[cols[i] || `C${i}`] = c ? c.v : "");
-        return obj;
-      });
-      return {cols, rows};
+      
+      // Handle cases where the response is not valid JSON
+      try {
+        const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+        const cols = json.table.cols.map(c => c.label || c.id || '');
+        const rows = json.table.rows.map(r => {
+          const obj = {}; 
+          r.c.forEach((c, i) => obj[cols[i] || `C${i}`] = c ? c.v : "");
+          return obj;
+        });
+        return {cols, rows};
+      } catch (e) {
+        throw new Error('Failed to parse sheet data');
+      }
     }
 
-    function renderTable(thId, tbId, cols, rows){
-      const th = document.getElementById(thId); const tb = document.getElementById(tbId);
-      th.innerHTML = `<tr>${cols.map(c=>`<th>${escapeHtml(c||'')}</th>`).join('')}</tr>`;
-      tb.innerHTML = rows.map(r=>`<tr>${cols.map(c=>`<td>${escapeHtml(r[c]??'')}</td>`).join('')}</tr>`).join('');
+    // Render table with data
+    function renderTable(thId, tbId, cols, rows) {
+      const th = document.getElementById(thId); 
+      const tb = document.getElementById(tbId);
+      
+      th.innerHTML = `<tr>${cols.map(c => `<th>${escapeHtml(c || '')}</th>`).join('')}</tr>`;
+      
+      if (rows.length === 0) {
+        tb.innerHTML = `<tr><td colspan="${cols.length}" style="text-align: center;">No data available</td></tr>`;
+      } else {
+        tb.innerHTML = rows.map(r => 
+          `<tr>${cols.map(c => `<td>${escapeHtml(r[c] ?? '')}</td>`).join('')}</tr>`
+        ).join('');
+      }
     }
 
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"]/g, m => ({
+    // Escape HTML to prevent XSS
+    function escapeHtml(s) {
+      if (s === null || s === undefined) return '';
+      return String(s).replace(/[&<>"'`=/]/g, m => ({
         "&": "&amp;",
         "<": "&lt;",
         ">": "&gt;",
-        "\"": "&quot;"
+        "\"": "&quot;",
+        "'": "&#39;",
+        "`": "&#x60;",
+        "=": "&#x3D;",
+        "/": "&#x2F;"
       }[m]));
     }
 
-    async function loadTables(){
-      try{
-        const t1 = await fetchSheet(CONFIG.TALIMI);
-        renderTable('talimi-th','talimi-tb', t1.cols, t1.rows);
-      }catch(e){ console.warn('Talimi load error', e); }
-      try{
-        const t2 = await fetchSheet(CONFIG.JAIZA);
-        renderTable('jaiza-th','jaiza-tb', t2.cols, t2.rows);
-      }catch(e){ console.warn('Jaiza load error', e); }
-      try{
-        const t3 = await fetchSheet(CONFIG.MAHANA);
-        renderTable('mahana-th','mahana-tb', t3.cols, t3.rows);
-      }catch(e){ console.warn('Mahana load error', e); }
+    // Search functionality for tables
+    function setupTableSearch(inputId, tableBodyId, columns) {
+      const searchInput = document.getElementById(inputId);
+      if (!searchInput) return;
+      
+      searchInput.addEventListener('input', () => {
+        const searchText = searchInput.value.toLowerCase();
+        const rows = document.querySelectorAll(`#${tableBodyId} tr`);
+        
+        rows.forEach(row => {
+          let rowText = '';
+          const cells = row.querySelectorAll('td');
+          
+          cells.forEach((cell, index) => {
+            if (columns.includes(index) || columns.length === 0) {
+              rowText += cell.textContent.toLowerCase() + ' ';
+            }
+          });
+          
+          if (rowText.includes(searchText)) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      });
     }
 
-    async function loadElamiya() {
+    // Load all tables with error handling
+    async function loadTables() {
+      try {
+        // Show loading state for Talimi
+        $('#talimi-loading').classList.remove('hide');
+        $('#talimi-error').classList.add('hide');
+        $('#talimi-table').classList.add('hide');
+        
+        const t1 = await fetchSheet(CONFIG.TALIMI);
+        renderTable('talimi-th', 'talimi-tb', t1.cols, t1.rows);
+        
+        // Hide loading, show table
+        $('#talimi-loading').classList.add('hide');
+        $('#talimi-table').classList.remove('hide');
+        
+        // Setup search for Talimi table (search all columns)
+        setupTableSearch('talimi-search', 'talimi-tb', []);
+      } catch(e) { 
+        console.warn('Talimi load error', e);
+        $('#talimi-loading').classList.add('hide');
+        $('#talimi-error').classList.remove('hide');
+      }
+      
+      try {
+        // Show loading state for Jaiza
+        $('#jaiza-loading').classList.remove('hide');
+        $('#jaiza-error').classList.add('hide');
+        $('#jaiza-table').classList.add('hide');
+        
+        const t2 = await fetchSheet(CONFIG.JAIZA);
+        renderTable('jaiza-th', 'jaiza-tb', t2.cols, t2.rows);
+        
+        // Hide loading, show table
+        $('#jaiza-loading').classList.add('hide');
+        $('#jaiza-table').classList.remove('hide');
+      } catch(e) { 
+        console.warn('Jaiza load error', e);
+        $('#jaiza-loading').classList.add('hide');
+        $('#jaiza-error').classList.remove('hide');
+      }
+      
+      try {
+        // Show loading state for Mahana
+        $('#mahana-loading').classList.remove('hide');
+        $('#mahana-error').classList.add('hide');
+        $('#mahana-table').classList.add('hide');
+        
+        const t3 = await fetchSheet(CONFIG.MAHANA);
+        renderTable('mahana-th', 'mahana-tb', t3.cols, t3.rows);
+        
+        // Hide loading, show table
+        $('#mahana-loading').classList.add('hide');
+        $('#mahana-table').classList.remove('hide');
+      } catch(e) { 
+        console.warn('Mahana load error', e);
+        $('#mahana-loading').classList.add('hide');
+        $('#mahana-error').classList.remove('hide');
+      }
+    }
+
+    // Load Elamiya PDFs from Google Drive
+  async function loadElamiya() {
     try {
       $('#elamiya-loading').classList.remove('hide');
       $('#elamiya-error').classList.add('hide');
       $('#elamiya-list').innerHTML = '';
 
-      const url = `https://www.googleapis.com/drive/v3/files?q='${1zc1AHSzcsYdAO7Ni_bdQGNXET7bLk7JW}'+in+parents+and+mimeType='application/pdf'&key=${CONFIG.DRIVE_API_KEY}&fields=files(id,name,modifiedTime,webViewLink)`;
+      const url = `https://www.googleapis.com/drive/v3/files?q='${CONFIG.ELAMIYA_FOLDER_ID}'+in+parents+and+mimeType='application/pdf'&key=${CONFIG.DRIVE_API_KEY}&fields=files(id,name,modifiedTime,webViewLink)`;
       const res = await fetch(url);
       if (!res.ok) throw new Error("Drive API error");
       const data = await res.json();
@@ -259,9 +808,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
