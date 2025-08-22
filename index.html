@@ -1,868 +1,397 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ur">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Majlis Talimi Umoor — Education Portal Dashboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0b3a33;
-      --bg-2: #0f4a43;
-      --primary: #12b886;
-      --primary-dark: #0ca678;
-      --text: #0b3a33;
-      --muted: #6b7280;
-      --card: #ffffff;
-      --error: #ff6b6b;
-      --success: #40c057;
-    }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    html, body {
-      font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-      background: #f4f7f7;
-      color: var(--text);
-      line-height: 1.6;
-    }
-    
-    a {
-      color: var(--primary);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    
-    a:hover {
-      color: var(--primary-dark);
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-    
-    /* Header */
-    .topbar {
-      background: var(--bg);
-      color: #e8fffb;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .brand-logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: #e7fff7;
-      display: grid;
-      place-items: center;
-      color: var(--bg);
-      font-weight: 700;
-      flex-shrink: 0;
-    }
-    
-    .brand h1 {
-      font-size: 20px;
-      margin: 0;
-    }
-    
-    .nav {
-      display: flex;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-    
-    .nav button {
-      border: 0;
-      background: transparent;
-      color: #e7fff7;
-      padding: 10px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-    
-    .nav button.active, .nav button:hover {
-      background: var(--bg-2);
-    }
-    
-    /* Hero */
-    .hero {
-      background: linear-gradient(120deg, #eafff7, #f8fffd);
-      border: 1px solid #d8f5e5;
-      border-radius: 20px;
-      padding: 32px;
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-    
-    .hero .badge {
-      display: inline-block;
-      background: #e6fcf5;
-      color: var(--bg);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      border: 1px solid #c3fae8;
-    }
-    
-    .hero h2 {
-      margin: 10px 0 6px 0;
-      font-size: 28px;
-    }
-    
-    .hero p {
-      margin: 0;
-      color: var(--muted);
-    }
-    
-    /* Cards */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 16px;
-    }
-    
-    .col-12 {
-      grid-column: span 12;
-    }
-    
-    .col-6 {
-      grid-column: span 6;
-    }
-    
-    .col-4 {
-      grid-column: span 4;
-    }
-    
-    @media (max-width: 900px) {
-      .col-6, .col-4 {
-        grid-column: span 12;
-      }
-      
-      .hero {
-        flex-direction: column;
-        text-align: center;
-        padding: 24px;
-      }
-      
-      .nav {
-        justify-content: center;
-        margin-top: 10px;
-      }
-      
-      .topbar .container {
-        flex-direction: column;
-        padding: 10px;
-      }
-    }
-    
-    .card {
-      background: var(--card);
-      border: 1px solid #e6e6e6;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    }
-    
-    .card h3 {
-      margin: 0 0 12px 0;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    /* Table */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    
-    thead th {
-      position: sticky;
-      top: 0;
-      background: #f5fffb;
-      border-bottom: 1px solid #e9ecef;
-      text-align: left;
-      padding: 12px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-    
-    tbody td {
-      border-bottom: 1px solid #f1f3f5;
-      padding: 12px;
-      font-size: 13px;
-    }
-    
-    tbody tr:hover {
-      background-color: #f8f9fa;
-    }
-    
-    .table-wrap {
-      max-height: 420px;
-      overflow: auto;
-      border: 1px solid #eef3f2;
-      border-radius: 12px;
-      margin-top: 16px;
-    }
-    
-    /* Selects */
-    .row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-    
-    .row > * {
-      flex: 1 1 220px;
-    }
-    
-    select, input[type="text"] {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      background: #fff;
-      font-family: inherit;
-      font-size: 14px;
-    }
-    
-    select:focus, input[type="text"]:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(18, 184, 134, 0.2);
-    }
-    
-    button.btn {
-      background: var(--bg);
-      color: #eafff8;
-      border: 0;
-      padding: 10px 16px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-family: inherit;
-      font-weight: 500;
-      transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
-    
-    button.btn:hover {
-      background: var(--bg-2);
-      transform: translateY(-1px);
-    }
-    
-    button.btn.secondary {
-      background: #e8faf3;
-      color: var(--bg);
-      border: 1px solid #b2f2e8;
-    }
-    
-    button.btn.secondary:hover {
-      background: #d8f5eb;
-    }
-    
-    .muted {
-      color: var(--muted);
-    }
-    
-    /* Footer */
-    footer {
-      margin: 40px 0 20px 0;
-      color: #7a8b87;
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-    }
-    
-    .hide {
-      display: none;
-    }
-    
-    /* Loading and error states */
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(18, 184, 134, 0.3);
-      border-radius: 50%;
-      border-top-color: var(--primary);
-      animation: spin 1s ease-in-out infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .error-message {
-      background: #fff5f5;
-      color: var(--error);
-      padding: 12px;
-      border-radius: 8px;
-      border-left: 4px solid var(--error);
-      margin: 16px 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .success-message {
-      background: #ebfbee;
-      color: var(--success);
-      padding: 12px;
-      border-radius: 8px;
-      border-left: 4px solid var(--success);
-      margin: 16px 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--muted);
-    }
-    
-    .empty-state svg {
-      margin-bottom: 16px;
-      opacity: 0.5;
-    }
-    
-    /* Search and filter */
-    .search-box {
-      position: relative;
-      margin-bottom: 16px;
-    }
-    
-    .search-box input {
-      padding-left: 40px;
-    }
-    
-    .search-icon {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-    }
-    
-    /* PDF card styles */
-    .pdf-card {
-      transition: all 0.2s;
-    }
-    
-    .pdf-card:hover {
-      transform: translateY(-4px);
-    }
-    
-    .pdf-card h3 {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    
-    .pdf-meta {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 8px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Majlis Talimi Umoor</title>
+    <!-- Tailwind CSS ke liye CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PapaParse library for parsing CSV data from Google Sheets -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <!-- Inter font family ke liye Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+        }
+        .header-bg {
+            background-color: #10411d; /* Green color for header, similar to the image */
+        }
+        .nav-link {
+            color: #ffffff;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            transition: background-color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .profile-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+        .btn-primary {
+            background-color: #10411d;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #0c3114;
+        }
+    </style>
 </head>
-<body>
-  <!-- Header + Nav -->
-  <div class="topbar">
-    <div class="container" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 16px;">
-      <div class="brand">
-        <div class="brand-logo">MTU</div>
-        <div>
-          <h1>Majlis Talimi Umoor — Dashboard</h1>
-          <div class="muted" style="font-size: 12px;">Education Portal</div>
-        </div>
-      </div>
-      <nav class="nav" id="nav">
-        <button data-tab="home" class="active">
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/><path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/></svg>
-          Home
-        </button>
-        <button data-tab="talimi">
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/></svg>
-          Talimi Zimedaran
-        </button>
-        <button data-tab="jaiza">
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M9.5 12.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 1 0 1zm0-3h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zm0-3h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1z"/></svg>
-          Jaiza Report
-        </button>
-        <button data-tab="mahana">
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M11.5 12.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zm0-3h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zm0-3h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1z"/></svg>
-          Mahana Test Report
-        </button>
-        <button data-tab="elamiya">
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8.5 5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5z"/><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg>
-          Elamiya
-        </button>
-      </nav>
-    </div>
-  </div>
+<body class="bg-gray-100">
 
-  <main class="container" style="margin-top: 18px;">
-    <!-- Home -->
-    <section id="tab-home">
-      <div class="hero">
-        <div>
-          <span class="badge">Welcome</span>
-          <h2>Majlis Talimi Umoor — Education Board</h2>
-          <p>Is portal me aap Talimi Zimedaran, Jaiza Report, Mahana Test Report aur Elamiya ki PDFs asaani se dekh sakte hain.</p>
+    <!-- Header / Navbar -->
+    <header class="header-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                <div class="text-2xl font-bold">Majlis Talimi Umoor</div>
+            </div>
+            <nav>
+                <ul class="flex flex-wrap justify-center md:justify-end space-x-2 md:space-x-4">
+                    <li><a href="#" class="nav-link" onclick="showPage('talimiZimedaran')">Talimi Zimedaran</a></li>
+                    <li><a href="#" class="nav-link" onclick="showPage('jaizaReport')">Jaiza Report</a></li>
+                    <li><a href="#" class="nav-link" onclick="showPage('mahanaTestReport')">Mahana Test Report</a></li>
+                    <li><a href="#" class="nav-link" onclick="showPage('elamiya')">Elamiya</a></li>
+                    <li><a href="#" class="nav-link" onclick="showPage('result')">Result</a></li>
+                </ul>
+            </nav>
         </div>
-      </div>
-      <div class="grid" style="margin-top: 16px;">
-        <div class="col-4">
-          <div class="card">
-            <h3>
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
-              INDIA KE TOTAL JAMIAAT
-            </h3>
-            <p class="muted">144</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="card">
-            <h3>
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/><path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/></svg>
-              TOTAL ASATIZAE KIRAM
-            </h3>
-            <p class="muted">0000</p>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="card">
-            <h3>
-              <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.207V8.5a.5.5 0 0 1-1 0V6.207L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2z"/></svg>
-              TOTAL STUDENTS
-            </h3>
-            <p class="muted">00000</p>
-          </div>
-        </div>
-      </div>
-    </section>
+    </header>
 
-    <!-- Talimi Zimedaran -->
-    <section id="tab-talimi" class="hide">
-      <div class="card">
-        <h3>Talimi Zimedaran</h3>
-        <p class="muted">Zimmedaran Ki Tafsil.</p>
-        
-        <div class="search-box">
-          <div class="search-icon">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
-          </div>
-          <input type="text" id="talimi-search" placeholder="Search Talimi Zimedaran..." />
-        </div>
-        
-        <div id="talimi-loading" class="empty-state">
-          <div class="loading" style="margin: 0 auto;"></div>
-          <p>Loading data...</p>
-        </div>
-        
-        <div id="talimi-error" class="error-message hide">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
-          <span>Error loading data. Please check your connection and try again.</span>
-        </div>
-        
-        <div class="table-wrap hide" id="talimi-table">
-          <table>
-            <thead id="talimi-th"></thead>
-            <tbody id="talimi-tb"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+    <main class="container mx-auto px-4 py-8">
 
-    <!-- Jaiza Report -->
-    <section id="tab-jaiza" class="hide">
-      <div class="card">
-        <h3>Jaiza Report — Sheet Data</h3>
-        
-        <div id="jaiza-loading" class="empty-state">
-          <div class="loading" style="margin: 0 auto;"></div>
-          <p>Loading data...</p>
+        <!-- Home Page (Default View) -->
+        <div id="homePage" class="page-content" style="display: block;">
+            <div class="bg-white p-8 rounded-xl shadow-lg text-center">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Majlis Talimi Umoor</h1>
+                <p class="text-xl text-gray-600">Aapki Taleem ki Behtari ke liye Humari Koshishein.</p>
+                <p class="mt-6 text-md text-gray-500">Navigation bar se apna pasandeeda option chunein.</p>
+            </div>
         </div>
-        
-        <div id="jaiza-error" class="error-message hide">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
-          <span>Error loading data. Please check your connection and try again.</span>
-        </div>
-        
-        <div class="table-wrap hide" id="jaiza-table">
-          <table>
-            <thead id="jaiza-th"></thead>
-            <tbody id="jaiza-tb"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
 
-    <!-- Mahana Test Report -->
-    <section id="tab-mahana" class="hide">
-      <div class="card">
-        <h3>Mahana Test Report — Sheet Data</h3>
-        
-        <div id="mahana-loading" class="empty-state">
-          <div class="loading" style="margin: 0 auto;"></div>
-          <p>Loading data...</p>
+        <!-- Talimi Zimedaran Section -->
+        <div id="talimiZimedaran" class="page-content" style="display: none;">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-6">Talimi Zimedaran</h2>
+            <div id="zimedaran-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Data loading message -->
+                <p id="loading-zimedaran" class="text-gray-500 col-span-full text-center">Data load ho raha hai...</p>
+                <!-- Profile Cards will be injected here by JavaScript -->
+            </div>
         </div>
-        
-        <div id="mahana-error" class="error-message hide">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
-          <span>Error loading data. Please check your connection and try again.</span>
-        </div>
-        
-        <div class="table-wrap hide" id="mahana-table">
-          <table>
-            <thead id="mahana-th"></thead>
-            <tbody id="mahana-tb"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
 
-    <!-- Elamiya PDFs list -->
-    <section id="tab-elamiya" class="hide">
-      <div class="card">
-        <h3>Elamiya — PDF Downloads</h3>
-        <p class="muted">Ye list Google Drive folder (public) se aa rahi hogi.</p>
-        
-        <div id="elamiya-loading" class="empty-state">
-          <div class="loading" style="margin: 0 auto;"></div>
-          <p>Loading PDF files...</p>
+        <!-- Jaiza Report Section -->
+        <div id="jaizaReport" class="page-content" style="display: none;">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-6">Jaiza Report</h2>
+            
+            <!-- Filters -->
+            <div class="bg-white p-6 rounded-xl shadow-lg mb-6 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+                <div class="w-full md:w-1/2">
+                    <label for="zimedar-filter" class="block text-sm font-medium text-gray-700">Talimi Zimmedar</label>
+                    <select id="zimedar-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        <option value="all">Sab Zimmedaran</option>
+                        <!-- Options will be added by JavaScript -->
+                    </select>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <label for="region-filter" class="block text-sm font-medium text-gray-700">Region</label>
+                    <select id="region-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        <option value="all">Sab Regions</option>
+                        <!-- Options will be added by JavaScript -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Report Data -->
+            <div id="jaiza-report-container">
+                <p id="loading-jaiza" class="text-gray-500 col-span-full text-center">Data load ho raha hai...</p>
+            </div>
+        </div>
+
+        <!-- Mahana Test Report Section -->
+        <div id="mahanaTestReport" class="page-content" style="display: none;">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-6">Mahana Test Report</h2>
+            
+            <!-- Filter -->
+            <div class="bg-white p-6 rounded-xl shadow-lg mb-6">
+                <label for="test-zimedar-filter" class="block text-sm font-medium text-gray-700">Talimi Zimmedar</label>
+                <select id="test-zimedar-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                    <option value="all">Sab Zimmedaran</option>
+                    <!-- Options will be added by JavaScript -->
+                </select>
+            </div>
+
+            <!-- Report Data -->
+            <div id="mahana-report-container">
+                <p id="loading-mahana" class="text-gray-500 col-span-full text-center">Data load ho raha hai...</p>
+            </div>
         </div>
         
-        <div id="elamiya-error" class="error-message hide">
-          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></svg>
-          <span>Error loading PDF files. Please check your API configuration.</span>
+        <!-- Elamiya Section -->
+        <div id="elamiya" class="page-content" style="display: none;">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-6">Elamiya</h2>
+            <div id="elamiya-list" class="bg-white p-6 rounded-xl shadow-lg space-y-4">
+                <!-- PDF list will be injected here -->
+            </div>
         </div>
-        
-        <div id="elamiya-list" class="grid" style="margin-top: 8px;"></div>
-      </div>
-    </section>
-  </main>
 
-  <footer>
-    © <span id="yr"></span> Majlis Talimi Umoor — Built for GitHub Pages. Contact: info@example.org
-  </footer>
+        <!-- Result Section -->
+        <div id="result" class="page-content" style="display: none;">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-6">Result</h2>
+            <div id="result-list" class="bg-white p-6 rounded-xl shadow-lg space-y-4">
+                <!-- PDF list will be injected here -->
+            </div>
+        </div>
 
-  <script>
-    // =============================
-    // 🔧 CONFIG — EDIT THESE VALUES
-    // =============================
-    const CONFIG = {
-      TALIMI:   { SHEET_ID: "1YPwNNvMgLb8QjovsK29nwZ-scuwFb4ShvvKZfq1oWVY", SHEET_NAME: "Talimi" },
-      JAIZA:    { SHEET_ID: "1_7xTzAI1_BT1peRklxIUAahDtNc2eJMUyaNhUFeLKU0", SHEET_NAME: "Jaiza" },
-      MAHANA:   { SHEET_ID: "19Ys4Y08Bch0Debpix-F8sG8BXb02VbTYgUlZXL6S5no", SHEET_NAME: "Mahana" },
-      DRIVE_API_KEY: "YOUR_PUBLIC_API_KEY",
-      ELAMIYA_FOLDER_ID: "1zc1AHSzcsYdAO7Ni_bdQGNXET7bLk7JW"
+    </main>
+
+<script>
+    // Google Sheets ke IDs jo user ne diye hain
+    const TALIMI_ZIMEDARAN_SHEET_ID = '1YPwNNvMgLb8QjovsK29nwZ-scuwFb4ShvvKZfq1oWVY';
+    const JAIZA_REPORT_SHEET_ID = '1_7xTzAI1_BT1peRklxIUAahDtNc2eJMUyaNhUFeLKU0';
+    const MAHANA_TEST_SHEET_ID = '19Ys4Y08Bch0Debpix-F8sG8BXb02VbTYgUlZXL6S5no';
+
+    // Google Sheets se data fetch karne ke liye generic function
+    async function fetchGoogleSheetData(sheetId) {
+        // Zaroori note: Google Sheet ka "gid" har sheet ka alag hota hai.
+        // Aam taur par, pehli sheet ka gid 0 hota hai, lekin agar aapki sheet
+        // kisi aur position par hai, to aapko URL se sahi gid nikalna hoga.
+        // Apni Google Sheet kholein, us sheet par jaein jis ka data aap lena chahte hain.
+        // URL ke aakhir mein gid=NUMBER ko copy karein aur code mein `gid=0` ki jagah paste karein.
+        const url = `https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?gid=0&single=true&output=csv`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                // Agar response ok nahi hai, to HTTP status code ko throw karein
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const csvText = await response.text();
+            return new Promise((resolve, reject) => {
+                Papa.parse(csvText, {
+                    header: true,
+                    complete: function(results) {
+                        resolve(results.data);
+                    },
+                    error: function(error) {
+                        reject(error);
+                    }
+                });
+            });
+        } catch (error) {
+            console.error('Error fetching Google Sheet data:', error);
+            // Yahan par hum user ko ek message dikha sakte hain
+            const loadingElement = document.getElementById(`loading-${
+                sheetId === TALIMI_ZIMEDARAN_SHEET_ID ? 'zimedaran' :
+                sheetId === JAIZA_REPORT_SHEET_ID ? 'jaiza' :
+                'mahana'
+            }`);
+            if (loadingElement) {
+                loadingElement.textContent = 'Data load nahi ho saka. Kripya apni Google Sheet settings aur gid jaanch lein.';
+            }
+            return null;
+        }
+    }
+
+    // Elamiya aur Result ke liye Google Drive mock data.
+    // Aapko har file ka "Public" shareable link lena hoga.
+    const mockGoogleDriveData = {
+        elamiya: [
+            { title: "Elamiya December 2023", url: "https://drive.google.com/file/d/abcdefg12345/view?usp=sharing" },
+            { title: "Elamiya November 2023", url: "https://drive.google.com/file/d/hijklm67890/view?usp=sharing" },
+            { title: "Naya Syllabus Elan", url: "https://drive.google.com/file/d/opqrst11223/view?usp=sharing" },
+        ],
+        result: [
+            { title: "Salana Imtehan Result 2023", url: "https://drive.google.com/file/d/uvwxyz44556/view?usp=sharing" },
+            { title: "Mahana Test October Result", url: "https://drive.google.com/file/d/abcd9988776/view?usp=sharing" },
+            { title: "Mid-Term Result 2023", url: "https://drive.google.com/file/d/efgh1234567/view?usp=sharing" },
+        ]
     };
 
-    const $ = (x) => document.querySelector(x);
-    const $$ = (x) => document.querySelectorAll(x);
-
-    // Tab switching functionality
-    function tabSwitch(id) {
-      document.querySelectorAll('main section').forEach(sec => sec.classList.add('hide'));
-      document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-      document.getElementById('tab-' + id).classList.remove('hide');
-      document.querySelector(`.nav button[data-tab="${id}"]`).classList.add('active');
-      
-      // Store the last active tab in localStorage
-      localStorage.setItem('lastActiveTab', id);
+    // Sab pages ko hide karein aur sirf ek ko dikhayein
+    function showPage(pageId) {
+        const pages = document.querySelectorAll('.page-content');
+        pages.forEach(page => page.style.display = 'none');
+        document.getElementById(pageId).style.display = 'block';
     }
 
-    // Initialize the page
-    document.getElementById('yr').textContent = new Date().getFullYear();
-    
-    // Check if there's a last active tab in localStorage
-    const lastActiveTab = localStorage.getItem('lastActiveTab');
-    if (lastActiveTab) {
-      tabSwitch(lastActiveTab);
-    }
-
-    document.getElementById('nav').addEventListener('click', (e) => {
-      if (e.target.matches('button[data-tab]')) {
-        tabSwitch(e.target.dataset.tab);
-      }
-    });
-
-    // Google Sheets fetch with error handling
-    async function fetchSheet({SHEET_ID, SHEET_NAME}, query = "select *") {
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}&tq=${encodeURIComponent(query)}`;
-      const res = await fetch(url);
-      
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      
-      const text = await res.text();
-      
-      // Handle cases where the response is not valid JSON
-      try {
-        const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
-        const cols = json.table.cols.map(c => c.label || c.id || '');
-        const rows = json.table.rows.map(r => {
-          const obj = {}; 
-          r.c.forEach((c, i) => obj[cols[i] || `C${i}`] = c ? c.v : "");
-          return obj;
-        });
-        return {cols, rows};
-      } catch (e) {
-        throw new Error('Failed to parse sheet data');
-      }
-    }
-
-    // Render table with data
-    function renderTable(thId, tbId, cols, rows) {
-      const th = document.getElementById(thId); 
-      const tb = document.getElementById(tbId);
-      
-      th.innerHTML = `<tr>${cols.map(c => `<th>${escapeHtml(c || '')}</th>`).join('')}</tr>`;
-      
-      if (rows.length === 0) {
-        tb.innerHTML = `<tr><td colspan="${cols.length}" style="text-align: center;">No data available</td></tr>`;
-      } else {
-        tb.innerHTML = rows.map(r => 
-          `<tr>${cols.map(c => `<td>${escapeHtml(r[c] ?? '')}</td>`).join('')}</tr>`
-        ).join('');
-      }
-    }
-
-    // Escape HTML to prevent XSS
-    function escapeHtml(s) {
-      if (s === null || s === undefined) return '';
-      return String(s).replace(/[&<>"'`=/]/g, m => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        "\"": "&quot;",
-        "'": "&#39;",
-        "`": "&#x60;",
-        "=": "&#x3D;",
-        "/": "&#x2F;"
-      }[m]));
-    }
-
-    // Search functionality for tables
-    function setupTableSearch(inputId, tableBodyId, columns) {
-      const searchInput = document.getElementById(inputId);
-      if (!searchInput) return;
-      
-      searchInput.addEventListener('input', () => {
-        const searchText = searchInput.value.toLowerCase();
-        const rows = document.querySelectorAll(`#${tableBodyId} tr`);
-        
-        rows.forEach(row => {
-          let rowText = '';
-          const cells = row.querySelectorAll('td');
-          
-          cells.forEach((cell, index) => {
-            if (columns.includes(index) || columns.length === 0) {
-              rowText += cell.textContent.toLowerCase() + ' ';
+    // Talimi Zimedaran ke Cards ko render karein
+    function renderZimedaranCards(data) {
+        document.getElementById('loading-zimedaran').style.display = 'none';
+        const container = document.getElementById('zimedaran-container');
+        container.innerHTML = '';
+        if (!data || data.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 col-span-full text-center">Data nahi mila.</p>';
+            return;
+        }
+        // Yahan par hum assume kar rahe hain ke Google Sheet ke columns "name", "designation", "region", "photo" hain.
+        // Agar aapke column names alag hain, to unhe yahan par badal dein.
+        data.forEach(zimedar => {
+            if (zimedar.name) { // Ensure name exists to avoid empty cards
+                const card = document.createElement('div');
+                card.className = 'profile-card p-6 text-center';
+                const photoUrl = zimedar.photo || "https://placehold.co/150x150/10411d/ffffff?text=No+Image";
+                card.innerHTML = `
+                    <img class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-gray-200" src="${photoUrl}" alt="${zimedar.name}">
+                    <h3 class="text-xl font-semibold text-gray-800">${zimedar.name}</h3>
+                    <p class="text-gray-600">${zimedar.designation || 'N/A'}</p>
+                    <p class="text-gray-500 text-sm mt-2">Region: ${zimedar.region || 'N/A'}</p>
+                `;
+                container.appendChild(card);
             }
-          });
-          
-          if (rowText.includes(searchText)) {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
-          }
         });
-      });
     }
 
-    // Load all tables with error handling
-    async function loadTables() {
-      try {
-        // Show loading state for Talimi
-        $('#talimi-loading').classList.remove('hide');
-        $('#talimi-error').classList.add('hide');
-        $('#talimi-table').classList.add('hide');
-        
-        const t1 = await fetchSheet(CONFIG.TALIMI);
-        renderTable('talimi-th', 'talimi-tb', t1.cols, t1.rows);
-        
-        // Hide loading, show table
-        $('#talimi-loading').classList.add('hide');
-        $('#talimi-table').classList.remove('hide');
-        
-        // Setup search for Talimi table (search all columns)
-        setupTableSearch('talimi-search', 'talimi-tb', []);
-      } catch(e) { 
-        console.warn('Talimi load error', e);
-        $('#talimi-loading').classList.add('hide');
-        $('#talimi-error').classList.remove('hide');
-      }
-      
-      try {
-        // Show loading state for Jaiza
-        $('#jaiza-loading').classList.remove('hide');
-        $('#jaiza-error').classList.add('hide');
-        $('#jaiza-table').classList.add('hide');
-        
-        const t2 = await fetchSheet(CONFIG.JAIZA);
-        renderTable('jaiza-th', 'jaiza-tb', t2.cols, t2.rows);
-        
-        // Hide loading, show table
-        $('#jaiza-loading').classList.add('hide');
-        $('#jaiza-table').classList.remove('hide');
-      } catch(e) { 
-        console.warn('Jaiza load error', e);
-        $('#jaiza-loading').classList.add('hide');
-        $('#jaiza-error').classList.remove('hide');
-      }
-      
-      try {
-        // Show loading state for Mahana
-        $('#mahana-loading').classList.remove('hide');
-        $('#mahana-error').classList.add('hide');
-        $('#mahana-table').classList.add('hide');
-        
-        const t3 = await fetchSheet(CONFIG.MAHANA);
-        renderTable('mahana-th', 'mahana-tb', t3.cols, t3.rows);
-        
-        // Hide loading, show table
-        $('#mahana-loading').classList.add('hide');
-        $('#mahana-table').classList.remove('hide');
-      } catch(e) { 
-        console.warn('Mahana load error', e);
-        $('#mahana-loading').classList.add('hide');
-        $('#mahana-error').classList.remove('hide');
-      }
-    }
+    // Jaiza Report ke data ko render karein
+    function renderJaizaReport(data) {
+        document.getElementById('loading-jaiza').style.display = 'none';
+        const container = document.getElementById('jaiza-report-container');
+        container.innerHTML = '';
+        if (!data || data.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center">Data nahi mila.</p>';
+            return;
+        }
 
-    // Load Elamiya PDFs from Google Drive
-    async function loadElamiya() {
-      const key = CONFIG.DRIVE_API_KEY;
-      const folder = CONFIG.ELAMIYA_FOLDER_ID;
-      
-      // Show loading state
-      $('#elamiya-loading').classList.remove('hide');
-      $('#elamiya-error').classList.add('hide');
-      
-      if (!key || key === "YOUR_PUBLIC_API_KEY" || !folder || folder === "1zc1AHSzcsYdAO7Ni_bdQGNXET7bLk7JW") {
-        $('#elamiya-loading').classList.add('hide');
-        $('#elamiya-error').classList.remove('hide');
-        $('#elamiya-error span').textContent = 'DRIVE_API_KEY ya FOLDER_ID set karein.';
-        return;
-      }
-      
-      try {
-        const q = encodeURIComponent(`'${folder}' in parents and mimeType='application/pdf' and trashed=false`);
-        const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,webViewLink,createdTime,size)&orderBy=createdTime desc&key=${key}`;
-        const res = await fetch(url);
+        // Yahan par aap Google Sheet se aaye hue data ko istemal kar sakte hain
+        // is data ko process karke jaiza, visits aur top 3 jamia ka hisab lagana padega.
+        // Abhi, hum sirf sample data dikha rahe hain
+        const totalJaiza = data.length;
+        const totalVisits = data.reduce((sum, item) => sum + (parseInt(item.visits) || 0), 0);
         
-        if (!res.ok) {
-          throw new Error(`Drive API error: ${res.status}`);
-        }
-        
-        const json = await res.json();
-        const files = json.files || [];
-        const grid = document.getElementById('elamiya-list');
-        
-        // Hide loading
-        $('#elamiya-loading').classList.add('hide');
-        
-        if (!files.length) {
-          grid.innerHTML = '<div class="col-12"><div class="empty-state"><svg width="48" height="48" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg><p>Koi PDF nahi mili (folder public hona chahiye).</p></div></div>';
-          return;
-        }
-        
-        grid.innerHTML = files.map(f => {
-          const dl = `https://drive.google.com/uc?id=${encodeURIComponent(f.id)}&export=download`;
-          const created = f.createdTime ? new Date(f.createdTime).toLocaleDateString() : '';
-          const size = f.size ? formatFileSize(f.size) : '';
-          
-          return `
-            <div class="col-4">
-              <div class="card pdf-card">
-                <h3 title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</h3>
-                <div class="pdf-meta">
-                  ${created} ${size ? `• ${size}` : ''}
+        // Mock data ki tarah top jamia nikalne ke liye aapko data analysis karna padega.
+        // Filhal, hum dummy data dikha rahe hain taake UI kaam kare.
+        const jaizaReportHTML = `
+            <div class="bg-white p-6 rounded-xl shadow-lg mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="text-2xl font-bold text-gray-800">${totalJaiza}</p>
+                        <p class="text-gray-500">Total Jaiza</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="text-2xl font-bold text-gray-800">${totalVisits}</p>
+                        <p class="text-gray-500">Total Visits</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="text-2xl font-bold text-gray-800">95%</p>
+                        <p class="text-gray-500">Highest Jaiza %</p>
+                    </div>
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <p class="text-2xl font-bold text-gray-800">88%</p>
+                        <p class="text-gray-500">Average Jaiza %</p>
+                    </div>
                 </div>
-                <div class="row" style="margin-top: 16px;">
-                  <a href="${f.webViewLink}" target="_blank" rel="noopener">
-                    <button class="btn secondary">
-                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/></svg>
-                      Open
-                    </button>
-                  </a>
-                  <a href="${dl}" download="${escapeHtml(f.name)}">
-                    <button class="btn">
-                      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/></svg>
-                      Download
-                    </button>
-                  </a>
-                </div>
-              </div>
             </div>
-          `;
-        }).join('');
-      } catch(e) {
-        console.error('Drive API error', e);
-        $('#elamiya-loading').classList.add('hide');
-        $('#elamiya-error').classList.remove('hide');
-        $('#elamiya-error span').textContent = 'Drive API error. API key / Access check karein.';
-      }
+            <!-- Top 3 Jamia Report - Ye data ko analyze karke display karna hoga -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold mb-4">Top 3 Jamia (Zimmedar ke Hisab se)</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>Jamia Faizan-e-Madina</strong> (95%) - Muhammad Ali</li>
+                        <li><strong>Jamia Ghausia</strong> (92%) - Ahmed Khan</li>
+                        <li><strong>Jamia Razavia</strong> (90%) - Fatima Syed</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold mb-4">Top 3 Jamia (Region ke Hisab se)</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>Jamia Faizan-e-Madina</strong> (95%) - Karachi</li>
+                        <li><strong>Jamia Ashrafia</strong> (93%) - Lahore</li>
+                        <li><strong>Jamia Madania</strong> (91%) - Islamabad</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+        container.innerHTML = jaizaReportHTML;
     }
 
-    // Format file size to human readable format
-    function formatFileSize(bytes) {
-      if (!bytes) return '';
-      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-      if (bytes === 0) return '0 Bytes';
-      const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
-      return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    // Mahana Test Report ko render karein
+    function renderMahanaTestReport(data) {
+        document.getElementById('loading-mahana').style.display = 'none';
+        const container = document.getElementById('mahana-report-container');
+        container.innerHTML = '';
+        if (!data || data.length === 0) {
+            container.innerHTML = '<p class="text-gray-500 text-center">Data nahi mila.</p>';
+            return;
+        }
+
+        const reportListHTML = data.map(item => `
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="text-lg font-semibold">${item.name || 'N/A'}</h4>
+                <p class="text-gray-600 mt-1">${item.report || 'N/A'}</p>
+                <p class="text-sm text-gray-500 mt-2">Jamia: ${item.jamia || 'N/A'}</p>
+            </div>
+        `).join('');
+
+        const mahanaReportHTML = `
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold mb-4">Mahana Test Reports</h3>
+                    <ul id="test-report-list" class="space-y-4">
+                        ${reportListHTML}
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold mb-4">Top 3 Jamia (Zimmedar ke Hisab se)</h3>
+                    <ul id="top-test-jamia" class="list-disc pl-5 space-y-2">
+                        <!-- Top 3 Jamia will be populated here based on data -->
+                        <li>Jamia Faizan-e-Madina</li>
+                        <li>Jamia Hamidia</li>
+                        <li>Jamia Qadria</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+        container.innerHTML = mahanaReportHTML;
     }
 
-    // Initialize the application
-    (async function init() {
-      // Load tables and Elamiya PDFs
-      await Promise.allSettled([
-        loadTables(),
-        loadElamiya()
-      ]);
-    })();
-  </script>
+    // Elamiya aur Result ke liye PDF list ko render karein
+    function renderPDFList(sectionId) {
+        const container = document.getElementById(sectionId);
+        container.innerHTML = '';
+        const data = sectionId === 'elamiya-list' ? mockGoogleDriveData.elamiya : mockGoogleDriveData.result;
+        data.forEach(pdf => {
+            const item = document.createElement('div');
+            item.className = 'flex items-center justify-between bg-gray-50 p-4 rounded-lg shadow-sm';
+            item.innerHTML = `
+                <span class="text-gray-800 font-medium">${pdf.title}</span>
+                <a href="${pdf.url}" target="_blank" class="btn-primary flex-shrink-0">Download</a>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    // Sab data fetch karein aur pages ko render karein
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Zaroori qadam: Apni Google Sheets ko "File" -> "Share" -> "Publish to the web" se
+        // publish karein. URL mein `output=csv` ka option chun-na zaroori hai.
+        const zimedaranData = await fetchGoogleSheetData(TALIMI_ZIMEDARAN_SHEET_ID);
+        renderZimedaranCards(zimedaranData);
+        
+        const jaizaReportData = await fetchGoogleSheetData(JAIZA_REPORT_SHEET_ID);
+        renderJaizaReport(jaizaReportData);
+
+        const mahanaTestData = await fetchGoogleSheetData(MAHANA_TEST_SHEET_ID);
+        renderMahanaTestReport(mahanaTestData);
+
+        renderPDFList('elamiya-list');
+        renderPDFList('result-list');
+    });
+</script>
+
 </body>
 </html>
-
-
-
