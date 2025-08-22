@@ -162,19 +162,15 @@
     </main>
 
 <script>
-    // Google Sheets ke IDs jo user ne diye hain
-    const TALIMI_ZIMEDARAN_SHEET_ID = '1YPwNNvMgLb8QjovsK29nwZ-scuwFb4ShvvKZfq1oWVY';
-    const JAIZA_REPORT_SHEET_ID = '1_7xTzAI1_BT1peRklxIUAahDtNc2eJMUyaNhUFeLKU0';
-    const MAHANA_TEST_SHEET_ID = '19Ys4Y08Bch0Debpix-F8sG8BXb02VbTYgUlZXL6S5no';
-
+    // Apne Google Sheets ke poore URL yahan paste karein.
+    // Aapko yeh URLs "File" -> "Share" -> "Publish to the web" se milenge.
+    // Ensure that each URL ends with '&output=csv'
+    const TALIMI_ZIMEDARAN_URL = 'https://docs.google.com/spreadsheets/d/1YPwNNvMgLb8QjovsK29nwZ-scuwFb4ShvvKZfq1oWVY/edit?gid=0#gid=0';
+    const JAIZA_REPORT_URL = 'https://docs.google.com/spreadsheets/d/1_7xTzAI1_BT1peRklxIUAahDtNc2eJMUyaNhUFeLKU0/edit?gid=0#gid=0';
+    const MAHANA_TEST_URL = 'https://docs.google.com/spreadsheets/d/19Ys4Y08Bch0Debpix-F8sG8BXb02VbTYgUlZXL6S5no/edit?gid=0#gid=0';
+    
     // Google Sheets se data fetch karne ke liye generic function
-    async function fetchGoogleSheetData(sheetId) {
-        // Zaroori note: Google Sheet ka "gid" har sheet ka alag hota hai.
-        // Aam taur par, pehli sheet ka gid 0 hota hai, lekin agar aapki sheet
-        // kisi aur position par hai, to aapko URL se sahi gid nikalna hoga.
-        // Apni Google Sheet kholein, us sheet par jaein jis ka data aap lena chahte hain.
-        // URL ke aakhir mein gid=NUMBER ko copy karein aur code mein `gid=0` ki jagah paste karein.
-        const url = `https://docs.google.com/spreadsheets/d/e/${sheetId}/pub?gid=0&single=true&output=csv`;
+    async function fetchGoogleSheetData(url) {
         try {
             const response = await fetch(url);
             if (!response.ok) {
@@ -197,12 +193,12 @@
             console.error('Error fetching Google Sheet data:', error);
             // Yahan par hum user ko ek message dikha sakte hain
             const loadingElement = document.getElementById(`loading-${
-                sheetId === TALIMI_ZIMEDARAN_SHEET_ID ? 'zimedaran' :
-                sheetId === JAIZA_REPORT_SHEET_ID ? 'jaiza' :
+                url === TALIMI_ZIMEDARAN_URL ? 'zimedaran' :
+                url === JAIZA_REPORT_URL ? 'jaiza' :
                 'mahana'
             }`);
             if (loadingElement) {
-                loadingElement.textContent = 'Data load nahi ho saka. Kripya apni Google Sheet settings aur gid jaanch lein.';
+                loadingElement.textContent = 'Data load nahi ho saka. Kripya apni Google Sheet ke "Publish to the web" URLs ko jaanch lein.';
             }
             return null;
         }
@@ -379,13 +375,13 @@
     document.addEventListener('DOMContentLoaded', async () => {
         // Zaroori qadam: Apni Google Sheets ko "File" -> "Share" -> "Publish to the web" se
         // publish karein. URL mein `output=csv` ka option chun-na zaroori hai.
-        const zimedaranData = await fetchGoogleSheetData(TALIMI_ZIMEDARAN_SHEET_ID);
+        const zimedaranData = await fetchGoogleSheetData(TALIMI_ZIMEDARAN_URL);
         renderZimedaranCards(zimedaranData);
         
-        const jaizaReportData = await fetchGoogleSheetData(JAIZA_REPORT_SHEET_ID);
+        const jaizaReportData = await fetchGoogleSheetData(JAIZA_REPORT_URL);
         renderJaizaReport(jaizaReportData);
 
-        const mahanaTestData = await fetchGoogleSheetData(MAHANA_TEST_SHEET_ID);
+        const mahanaTestData = await fetchGoogleSheetData(MAHANA_TEST_URL);
         renderMahanaTestReport(mahanaTestData);
 
         renderPDFList('elamiya-list');
